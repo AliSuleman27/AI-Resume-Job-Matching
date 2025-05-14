@@ -1,0 +1,187 @@
+{% extends "base.html" %}
+
+{% block title %}Create Job Posting | NerdyParser.com{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+    <div class="bg-white shadow rounded-lg overflow-hidden">
+        <!-- Header -->
+        <div class="bg-primary-600 px-6 py-4">
+            <div class="flex items-center justify-between">
+                <h2 class="text-xl font-bold text-white">
+                    <i class="fas fa-file-upload mr-2"></i> Create New Job Posting
+                </h2>
+                <a href="{{ url_for('recruiter_dashboard') }}" class="text-primary-100 hover:text-white transition-colors">
+                    <i class="fas fa-arrow-left mr-1"></i> Back to Dashboard
+                </a>
+            </div>
+        </div>
+
+        <!-- Form -->
+        <div class="px-6 py-6">
+            <form method="POST" enctype="multipart/form-data" class="space-y-6">
+                <!-- File Upload -->
+                <div class="space-y-2">
+                    <label class="block text-sm font-medium text-gray-700">
+                        <i class="fas fa-file-alt mr-1 text-primary-600"></i> Upload Job Description
+                    </label>
+                    
+                    <div id="upload-container" class="border-2 border-dashed border-gray-300 rounded-lg p-12 text-center transition-all duration-300 hover:border-primary-500 hover:bg-primary-50">
+                        <i class="fas fa-file-upload text-5xl text-primary-500 mb-4"></i>
+                        <h2 class="text-2xl font-semibold text-gray-700 mb-2">Upload Job Description</h2>
+                        <p class="text-gray-500 mb-6">Supports PDF, DOCX, and TXT files</p>
+                        <input type="file" id="file-upload" name="file" class="hidden" accept=".pdf,.docx,.txt">
+                        <button id="upload-btn" type="button" class="bg-primary-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-primary-700 transition-colors duration-300">
+                            Select File
+                        </button>
+                        <p id="file-name" class="mt-4 text-sm text-gray-500 hidden"></p>
+                    </div>
+
+                    <div id="progress-container" class="mt-6 hidden">
+                        <div class="flex justify-between mb-2">
+                            <span class="text-sm font-medium text-primary-700">Processing...</span>
+                            <span id="progress-percent" class="text-sm font-medium text-primary-700">0%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2.5">
+                            <div id="progress-bar" class="bg-primary-600 h-2.5 rounded-full" style="width: 0%"></div>
+                        </div>
+                    </div>
+
+                    <div id="error-message" class="mt-4 text-red-500 hidden"></div>
+                </div>
+
+                <!-- AI Info -->
+                <div class="bg-primary-50 border-l-4 border-primary-400 p-4 rounded">
+                    <div class="flex">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-robot text-primary-600"></i>
+                        </div>
+                        <div class="ml-3">
+                            <p class="text-sm text-primary-700">
+                                Our AI will automatically extract and structure the job details from your document.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="flex justify-end space-x-3 pt-4">
+                    <button type="reset" class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                        <i class="fas fa-times mr-2"></i> Cancel
+                    </button>
+                    <button type="submit" id="submit-btn" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                        <i class="fas fa-magic mr-2"></i> Parse & Create Job
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const uploadBtn = document.getElementById('upload-btn');
+    const fileInput = document.getElementById('file-upload');
+    const fileNameDisplay = document.getElementById('file-name');
+    const uploadContainer = document.getElementById('upload-container');
+    const progressContainer = document.getElementById('progress-container');
+    const progressBar = document.getElementById('progress-bar');
+    const progressPercent = document.getElementById('progress-percent');
+    const errorMessage = document.getElementById('error-message');
+    const submitBtn = document.getElementById('submit-btn');
+
+    // Trigger file input when button is clicked
+    uploadBtn.addEventListener('click', function() {
+        fileInput.click();
+    });
+
+    // Handle file selection
+    fileInput.addEventListener('change', function() {
+        if (fileInput.files.length > 0) {
+            const file = fileInput.files[0];
+            fileNameDisplay.textContent = `Selected: ${file.name}`;
+            fileNameDisplay.classList.remove('hidden');
+            submitBtn.disabled = false;
+        }
+    });
+
+    // Drag and drop functionality
+    uploadContainer.addEventListener('dragover', function(e) {
+        e.preventDefault();
+        uploadContainer.classList.add('border-primary-500', 'bg-primary-50');
+    });
+
+    uploadContainer.addEventListener('dragleave', function() {
+        uploadContainer.classList.remove('border-primary-500', 'bg-primary-50');
+    });
+
+    uploadContainer.addEventListener('drop', function(e) {
+        e.preventDefault();
+        uploadContainer.classList.remove('border-primary-500', 'bg-primary-50');
+        
+        if (e.dataTransfer.files.length > 0) {
+            fileInput.files = e.dataTransfer.files;
+            const file = e.dataTransfer.files[0];
+            fileNameDisplay.textContent = `Selected: ${file.name}`;
+            fileNameDisplay.classList.remove('hidden');
+            submitBtn.disabled = false;
+        }
+    });
+
+    // Form submission handling
+    const form = document.querySelector('form');
+    form.addEventListener('submit', function(e) {
+        if (!fileInput.files.length) {
+            e.preventDefault();
+            showError('Please select a file to upload.');
+            return;
+        }
+
+        const file = fileInput.files[0];
+        
+        // Validate file type
+        const validTypes = ['application/pdf', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'text/plain'];
+        if (!validTypes.includes(file.type) && !file.name.match(/\.(pdf|docx|txt)$/i)) {
+            e.preventDefault();
+            showError('Please upload a PDF, DOCX, or TXT file.');
+            return;
+        }
+
+        // Validate file size (max 5MB)
+        if (file.size > 5 * 1024 * 1024) {
+            e.preventDefault();
+            showError('File size should be less than 5MB.');
+            return;
+        }
+
+        // Show progress
+        progressContainer.classList.remove('hidden');
+        uploadBtn.disabled = true;
+        submitBtn.disabled = true;
+
+        // Simulate progress (in a real app, you'd use actual upload progress)
+        let progress = 0;
+        const progressInterval = setInterval(() => {
+            progress += 5;
+            if (progress > 90) {
+                clearInterval(progressInterval);
+            }
+            updateProgress(progress);
+        }, 200);
+    });
+
+    function updateProgress(percent) {
+        progressBar.style.width = `${percent}%`;
+        progressPercent.textContent = `${percent}%`;
+    }
+
+    function showError(message) {
+        errorMessage.textContent = message;
+        errorMessage.classList.remove('hidden');
+        setTimeout(() => {
+            errorMessage.classList.add('hidden');
+        }, 5000);
+    }
+});
+</script>
+{% endblock %}

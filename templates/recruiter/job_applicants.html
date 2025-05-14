@@ -1,0 +1,199 @@
+{% extends "base.html" %}
+{% block title %}Job Applicants | NerdyParser.com{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="mb-6">
+        <a href="{{ url_for('recruiter_dashboard') }}" class="inline-flex items-center text-primary-600 hover:text-primary-800 mb-4">
+            <i class="fas fa-arrow-left mr-2"></i> Back to Dashboard
+        </a>
+        <h1 class="text-2xl font-bold text-gray-900">
+            <i class="fas fa-users mr-2 text-primary-600"></i> Applicants for {{ job.parsed_data.title }}
+        </h1>
+        <p class="text-gray-500 mt-1">{{ job.company }}</p>
+    </div>
+
+    <!-- Stats Section -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <!-- Total Applicants -->
+        <div class="bg-white p-6 rounded-lg shadow">
+            <div class="flex items-center">
+                <div class="p-3 rounded-full bg-primary-100 text-primary-600 mr-4">
+                    <i class="fas fa-users text-xl"></i>
+                </div>
+                <div>
+                    <p class="text-sm font-medium text-gray-500">Total Applicants</p>
+                    <p class="text-2xl font-semibold text-gray-900">{{ total_applicants }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Status Breakdown -->
+        <div class="bg-white p-6 rounded-lg shadow">
+            <h3 class="text-lg font-medium text-gray-900 mb-4">Application Status</h3>
+            <div class="space-y-3">
+                {% for status, count in status_counts.items() %}
+                <div>
+                    <div class="flex justify-between text-sm mb-1">
+                        <span class="capitalize">{{ status }}</span>
+                        <span>{{ count }} ({{ (count / total_applicants * 100)|round(1) }}%)</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2">
+                        <div class="bg-primary-600 h-2 rounded-full" 
+                             style="width: {{ (count / total_applicants * 100)|round(1) }}%"></div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Experience Levels -->
+        <div class="bg-white p-6 rounded-lg shadow">
+            <h3 class="text-lg font-medium text-gray-900 mb-4">Experience Levels</h3>
+            <div class="space-y-3">
+                {% for level, count in experience_levels.items() %}
+                <div>
+                    <div class="flex justify-between text-sm mb-1">
+                        <span>{{ level }}</span>
+                        <span>{{ count }} ({{ (count / total_applicants * 100)|round(1) }}%)</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2">
+                        <div class="bg-primary-600 h-2 rounded-full" 
+                             style="width: {{ (count / total_applicants * 100)|round(1) }}%"></div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Top Skills -->
+    <div class="bg-white p-6 rounded-lg shadow mb-8">
+        <h3 class="text-lg font-medium text-gray-900 mb-4">Top Skills</h3>
+        <div class="flex flex-wrap gap-2">
+            {% for skill, count in top_skills %}
+            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary-100 text-primary-800">
+                {{ skill }} <span class="ml-1 text-primary-600">({{ count }})</span>
+            </span>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Applicants Table -->
+    <div class="bg-white shadow rounded-lg overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Applicant
+                        </th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Experience
+                        </th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Skills
+                        </th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Status
+                        </th>
+                        <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Actions
+                        </th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    {% for app in applications %}
+                    <tr>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0 h-10 w-10 rounded-full bg-primary-100 flex items-center justify-center">
+                                    <i class="fas fa-user text-primary-600"></i>
+                                </div>
+                                <div class="ml-4">
+                                    <div class="text-sm font-medium text-gray-900">
+                                        {{ app.resume_data.basic_info.full_name }}
+                                    </div>
+                                    <div class="text-sm text-gray-500">{{ app.user_email }}</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="text-sm text-gray-900">
+                                {% set total_exp = 0 %}
+                                {% for exp in app.resume_data.get('experience', []) %}
+                                    {% if exp.start_date and exp.end_date %}
+                                        {% set start = exp.start_date|string %}
+                                        {% set end = exp.end_date|string if exp.end_date else now|string %}
+                                        {% set years = (end|string_to_date - start|string_to_date).days / 365.25 %}
+                                        {% set total_exp = total_exp + years %}
+                                    {% endif %}
+                                {% endfor %}
+                                {{ total_exp|round(1) }} years
+                            </div>
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="flex flex-wrap gap-1">
+                                {% for skill in app.resume_data.get('skills', [])[:3] %}
+                                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-800">
+                                    {{ skill.skill_name }}
+                                </span>
+                                {% endfor %}
+                                {% if app.resume_data.get('skills', [])|length > 3 %}
+                                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-800">
+                                    +{{ app.resume_data.get('skills', [])|length - 3 }} more
+                                </span>
+                                {% endif %}
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <select class="status-select border-gray-300 rounded-md shadow-sm text-sm" 
+                                    data-application-id="{{ app._id }}"
+                                    onchange="updateStatus(this)">
+                                <option value="submitted" {% if app.status == 'submitted' %}selected{% endif %}>Submitted</option>
+                                <option value="reviewed" {% if app.status == 'reviewed' %}selected{% endif %}>Reviewed</option>
+                                <option value="rejected" {% if app.status == 'rejected' %}selected{% endif %}>Rejected</option>
+                                <option value="hired" {% if app.status == 'hired' %}selected{% endif %}>Hired</option>
+                            </select>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                            <a href="{{ url_for('recruiter_view_resume', resume_id=app.resume_id) }}" class="text-primary-600 hover:text-primary-900 mr-4">
+                                <i class="fas fa-eye mr-1"></i> View
+                            </a>
+                            <a href="#" class="text-indigo-600 hover:text-indigo-900">
+                                <i class="fas fa-envelope mr-1"></i> Contact
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+function updateStatus(selectElement) {
+    const applicationId = selectElement.dataset.applicationId;
+    const newStatus = selectElement.value;
+    
+    fetch(`/api/applications/${applicationId}/status`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ status: newStatus })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Optional: Show a success message
+            console.log('Status updated successfully');
+        }
+    })
+    .catch(error => {
+        console.error('Error updating status:', error);
+    });
+}
+</script>
+{% endblock %}

@@ -1,0 +1,206 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-12">
+    <div class="max-w-6xl mx-auto">
+        <div class="flex justify-between items-center mb-8">
+            <h1 class="text-3xl font-bold text-indigo-700">Parsed Resume</h1>
+            <button onclick="window.location.href='/'" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors duration-300">
+                <i class="fas fa-arrow-left mr-2"></i> Back to Upload
+            </button>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden mb-8">
+            <div class="p-6 border-b border-gray-200">
+                <h2 class="text-xl font-semibold text-gray-800">Personal Information</h2>
+            </div>
+            <div class="p-6 grid md:grid-cols-2 gap-6" id="personal-info">
+                <!-- Filled by JavaScript -->
+            </div>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-8">
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                <div class="p-6 border-b border-gray-200">
+                    <h2 class="text-xl font-semibold text-gray-800">Work Experience</h2>
+                </div>
+                <div class="p-6 space-y-6" id="work-experience">
+                    <!-- Filled by JavaScript -->
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                <div class="p-6 border-b border-gray-200">
+                    <h2 class="text-xl font-semibold text-gray-800">Education</h2>
+                </div>
+                <div class="p-6 space-y-6" id="education">
+                    <!-- Filled by JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-8 grid md:grid-cols-2 gap-8">
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                <div class="p-6 border-b border-gray-200">
+                    <h2 class="text-xl font-semibold text-gray-800">Skills</h2>
+                </div>
+                <div class="p-6" id="skills">
+                    <!-- Filled by JavaScript -->
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                <div class="p-6 border-b border-gray-200">
+                    <h2 class="text-xl font-semibold text-gray-800">JSON Output</h2>
+                </div>
+                <div class="p-6">
+                    <pre class="bg-gray-100 p-4 rounded-lg overflow-x-auto text-sm" id="json-output"></pre>
+                    <button id="copy-json" class="mt-4 bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors duration-300">
+                        <i class="fas fa-copy mr-2"></i> Copy JSON
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Parse the JSON data passed from Flask
+    const resumeData = JSON.parse('{{ parsed_resume | tojson | safe }}');
+    
+    document.addEventListener('DOMContentLoaded', function() {
+        // Render all sections
+        renderPersonalInfo();
+        renderWorkExperience();
+        renderEducation();
+        renderSkills();
+        renderJSONOutput();
+        
+        // Setup copy button
+        document.getElementById('copy-json').addEventListener('click', function() {
+            const jsonText = document.getElementById('json-output').textContent;
+            navigator.clipboard.writeText(jsonText).then(() => {
+                const btn = this;
+                btn.innerHTML = '<i class="fas fa-check mr-2"></i> Copied!';
+                setTimeout(() => {
+                    btn.innerHTML = '<i class="fas fa-copy mr-2"></i> Copy JSON';
+                }, 2000);
+            });
+        });
+    });
+
+    function renderPersonalInfo() {
+        const container = document.getElementById('personal-info');
+        const info = resumeData.personal_info || {};
+        
+        const html = `
+            <div class="space-y-2">
+                <h3 class="font-medium text-gray-500">Full Name</h3>
+                <p class="text-lg">${info.name || 'Not specified'}</p>
+            </div>
+            <div class="space-y-2">
+                <h3 class="font-medium text-gray-500">Email</h3>
+                <p class="text-lg">${info.email || 'Not specified'}</p>
+            </div>
+            <div class="space-y-2">
+                <h3 class="font-medium text-gray-500">Phone</h3>
+                <p class="text-lg">${info.phone || 'Not specified'}</p>
+            </div>
+            <div class="space-y-2">
+                <h3 class="font-medium text-gray-500">Location</h3>
+                <p class="text-lg">${info.location || 'Not specified'}</p>
+            </div>
+        `;
+        
+        container.innerHTML = html;
+    }
+
+    function renderWorkExperience() {
+        const container = document.getElementById('work-experience');
+        const experiences = resumeData.work_experience || [];
+        
+        if (experiences.length === 0) {
+            container.innerHTML = '<p class="text-gray-500">No work experience found</p>';
+            return;
+        }
+        
+        let html = '';
+        experiences.forEach(exp => {
+            html += `
+                <div class="border-l-4 border-indigo-500 pl-4 py-1">
+                    <h3 class="font-semibold text-lg">${exp.position || 'Unknown Position'}</h3>
+                    <p class="text-indigo-600">${exp.company || 'Unknown Company'} • ${exp.duration || 'Unknown Duration'}</p>
+                    <ul class="mt-2 list-disc list-inside space-y-1 text-gray-700">
+                        ${(exp.responsibilities || []).map(resp => `<li>${resp}</li>`).join('')}
+                    </ul>
+                </div>
+            `;
+        });
+        
+        container.innerHTML = html;
+    }
+
+    function renderEducation() {
+        const container = document.getElementById('education');
+        const education = resumeData.education || [];
+        
+        if (education.length === 0) {
+            container.innerHTML = '<p class="text-gray-500">No education information found</p>';
+            return;
+        }
+        
+        let html = '';
+        education.forEach(edu => {
+            html += `
+                <div class="border-l-4 border-indigo-500 pl-4 py-1">
+                    <h3 class="font-semibold text-lg">${edu.degree || 'Unknown Degree'}</h3>
+                    <p class="text-indigo-600">${edu.institution || 'Unknown Institution'} • ${edu.duration || 'Unknown Duration'}</p>
+                    ${edu.field ? `<p class="text-gray-700 mt-1">Field: ${edu.field}</p>` : ''}
+                </div>
+            `;
+        });
+        
+        container.innerHTML = html;
+    }
+
+    function renderSkills() {
+        const container = document.getElementById('skills');
+        const skills = resumeData.skills || {};
+        
+        let html = '';
+        
+        if (skills.technical && skills.technical.length > 0) {
+            html += `
+                <div class="mb-6">
+                    <h3 class="font-medium text-gray-700 mb-2">Technical Skills</h3>
+                    <div class="flex flex-wrap gap-2">
+                        ${skills.technical.map(skill => `
+                            <span class="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full text-sm">${skill}</span>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+        
+        if (skills.soft && skills.soft.length > 0) {
+            html += `
+                <div>
+                    <h3 class="font-medium text-gray-700 mb-2">Soft Skills</h3>
+                    <div class="flex flex-wrap gap-2">
+                        ${skills.soft.map(skill => `
+                            <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">${skill}</span>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+        
+        container.innerHTML = html || '<p class="text-gray-500">No skills information found</p>';
+    }
+
+    function renderJSONOutput() {
+        const container = document.getElementById('json-output');
+        container.textContent = JSON.stringify(resumeData, null, 2);
+    }
+</script>
+{% endblock %}

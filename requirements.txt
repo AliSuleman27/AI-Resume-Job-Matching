@@ -1,0 +1,8 @@
+Flask
+python-dotenv
+PyPDF2
+python-docx
+groq
+pymongo
+flask-login
+werkzeug

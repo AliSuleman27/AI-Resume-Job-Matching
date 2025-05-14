@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+
+{% block title %}Browse Jobs | NerdyParser.com{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="mb-8">
+        <h1 class="text-3xl font-bold text-gray-900">Browse Jobs</h1>
+        <p class="mt-2 text-gray-600">Find your next career opportunity</p>
+    </div>
+
+    <div class="bg-white shadow rounded-lg overflow-hidden">
+        <div class="divide-y divide-gray-200">
+            {% for job in jobs %}
+            <div class="p-6 hover:bg-gray-50 transition-colors">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h2 class="text-xl font-semibold text-gray-900">
+                            <a href="{{ url_for('job_detail', job_id=job._id) }}" class="hover:text-primary-600">
+                                {{ job.parsed_data.title }}
+                            </a>
+                        </h2>
+                        <div class="mt-1 flex items-center text-sm text-gray-500">
+                            <span class="mr-4">
+                                <i class="fas fa-building mr-1"></i>
+                                {{ job.company }}
+                            </span>
+                            <span>
+                                <i class="fas fa-map-marker-alt mr-1"></i>
+                                {% if job.parsed_data.locations %}
+                                    {% for loc in job.parsed_data.locations %}
+                                        {{ loc.city }}, {{ loc.country }}{% if not loop.last %} | {% endif %}
+                                    {% endfor %}
+                                {% else %}
+                                    Remote
+                                {% endif %}
+                            </span>
+                            
+                        </div>
+                    </div>
+                    {% if job.parsed_data.is_remote %}
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary-100 text-primary-800">
+                        Remote
+                    </span>
+                {% endif %}
+                {% if job.parsed_data.is_hybrid %}
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary-100 text-primary-800">
+                        Hybrid
+                    </span>
+                {% endif %}
+                {% if job.parsed_data.is_onsite %}
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary-100 text-primary-800">
+                        Onsite
+                    </span>
+                {% endif %}
+                
+                </div>
+                <div class="mt-4">
+                    <p class="text-gray-600 line-clamp-2">
+                        {{ job.parsed_data.description | truncate(200) }}
+                    </p>
+                </div>
+                <div class="mt-4 flex justify-between items-center">
+                    <span class="text-sm text-gray-500">
+                        Posted {{ job.created_at.strftime('%b %d, %Y') }}
+                    </span>
+                    <a href="{{ url_for('job_detail', job_id=job._id) }}" class="text-sm font-medium text-primary-600 hover:text-primary-500">
+                        View details <i class="fas fa-arrow-right ml-1"></i>
+                    </a>
+                </div>
+            </div>
+            {% else %}
+            <div class="p-6 text-center text-gray-500">
+                No jobs available at the moment. Check back later!
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    {% if total_pages > 1 %}
+    <div class="mt-8 flex justify-center">
+        <nav class="flex items-center space-x-4">
+            {% if current_page > 1 %}
+            <a href="{{ url_for('browse_jobs', page=current_page-1) }}" class="px-3 py-1 rounded-md bg-white border border-gray-300 text-sm font-medium text-gray-700 hover:bg-gray-50">
+                Previous
+            </a>
+            {% endif %}
+            
+            <span class="px-3 py-1 rounded-md bg-primary-600 text-white text-sm font-medium">
+                Page {{ current_page }} of {{ total_pages }}
+            </span>
+            
+            {% if current_page < total_pages %}
+            <a href="{{ url_for('browse_jobs', page=current_page+1) }}" class="px-3 py-1 rounded-md bg-white border border-gray-300 text-sm font-medium text-gray-700 hover:bg-gray-50">
+                Next
+            </a>
+            {% endif %}
+        </nav>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

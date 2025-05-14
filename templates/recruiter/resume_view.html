@@ -1,0 +1,346 @@
+{% extends "base.html" %}
+{% block title %}Resume View | NerdyParser.com{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="mb-6">
+        <a href="{{ url_for('view_applicants') }}" class="inline-flex items-center text-primary-600 hover:text-primary-800 mb-4">
+            <i class="fas fa-arrow-left mr-2"></i> Back to Applicants
+        </a>
+        <h1 class="text-2xl font-bold text-gray-900">
+            <i class="fas fa-file-alt mr-2 text-primary-600"></i> Resume Details
+        </h1>
+    </div>
+
+    <!-- Main Profile Card -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Left Column - Profile Info -->
+        <div class="lg:col-span-1">
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                <!-- Profile Header -->
+                <div class="bg-gradient-to-r from-indigo-600 to-indigo-400 p-6 text-center">
+                    {% if resume.parsed_data.basic_info %}
+                    <div class="w-32 h-32 mx-auto rounded-full bg-white flex items-center justify-center mb-4 overflow-hidden border-4 border-white shadow-md">
+                        <i class="fas fa-user text-5xl text-indigo-600"></i>
+                    </div>
+                    <h2 class="text-2xl font-bold text-white">{{ resume.parsed_data.basic_info.full_name }}</h2>
+                    <p class="text-indigo-100">{{ resume.parsed_data.basic_info.current_title }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- Contact Information -->
+                <div class="p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                        <i class="fas fa-address-card text-indigo-600 mr-2"></i> Contact
+                    </h3>
+                    <ul class="space-y-3">
+                        {% if resume.parsed_data.contact_info.email %}
+                        <li class="flex items-start">
+                            <i class="fas fa-envelope text-gray-500 mt-1 mr-3 w-5"></i>
+                            <span>{{ resume.parsed_data.contact_info.email }}</span>
+                        </li>
+                        {% endif %}
+                        
+                        {% if resume.parsed_data.contact_info.phone %}
+                        <li class="flex items-start">
+                            <i class="fas fa-phone text-gray-500 mt-1 mr-3 w-5"></i>
+                            <span>{{ resume.parsed_data.contact_info.phone }}</span>
+                        </li>
+                        {% endif %}
+                        
+                        {% if resume.parsed_data.contact_info.address %}
+                        <li class="flex items-start">
+                            <i class="fas fa-map-marker-alt text-gray-500 mt-1 mr-3 w-5"></i>
+                            <span>
+                                {{ resume.parsed_data.contact_info.address.street }}<br>
+                                {{ resume.parsed_data.contact_info.address.city }}, {{ resume.parsed_data.contact_info.address.state }} {{ resume.parsed_data.contact_info.address.zip_code }}<br>
+                                {{ resume.parsed_data.contact_info.address.country }}
+                            </span>
+                        </li>
+                        {% endif %}
+                        
+                        {% if resume.parsed_data.contact_info.linkedin %}
+                        <li class="flex items-start">
+                            <i class="fab fa-linkedin text-gray-500 mt-1 mr-3 w-5"></i>
+                            <a href="{{ resume.parsed_data.contact_info.linkedin }}" target="_blank" class="text-indigo-600 hover:underline">LinkedIn Profile</a>
+                        </li>
+                        {% endif %}
+                        
+                        {% if resume.parsed_data.contact_info.github %}
+                        <li class="flex items-start">
+                            <i class="fab fa-github text-gray-500 mt-1 mr-3 w-5"></i>
+                            <a href="{{ resume.parsed_data.contact_info.github }}" target="_blank" class="text-indigo-600 hover:underline">GitHub Profile</a>
+                        </li>
+                        {% endif %}
+                    </ul>
+
+                    <!-- Skills Section -->
+                    {% if resume.parsed_data.skills %}
+                    <div class="mt-8">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                            <i class="fas fa-code text-indigo-600 mr-2"></i> Skills
+                        </h3>
+                        <div class="flex flex-wrap gap-2">
+                            {% for skill in resume.parsed_data.skills %}
+                            <div class="bg-indigo-50 text-indigo-800 px-3 py-1 rounded-full text-sm flex items-center">
+                                <i class="fas fa-check-circle text-xs mr-1"></i>
+                                {{ skill.skill_name }}
+                                {% if skill.proficiency %}
+                                <span class="ml-1 text-xs text-indigo-600">({{ skill.proficiency }})</span>
+                                {% endif %}
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <!-- Languages -->
+                    {% if resume.parsed_data.languages %}
+                    <div class="mt-8">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                            <i class="fas fa-language text-indigo-600 mr-2"></i> Languages
+                        </h3>
+                        <ul class="space-y-2">
+                            {% for language in resume.parsed_data.languages %}
+                            <li class="flex justify-between">
+                                <span>{{ language.language }}</span>
+                                <span class="text-gray-500">{{ language.proficiency }}</span>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column - Main Content -->
+        <div class="lg:col-span-2 space-y-6">
+            <!-- Summary -->
+            {% if resume.parsed_data.summary %}
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                <div class="p-6">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                        <i class="fas fa-user-tie text-indigo-600 mr-2"></i> Professional Summary
+                    </h3>
+                    <p class="text-gray-700">{{ resume.parsed_data.summary }}</p>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Work Experience -->
+            {% if resume.parsed_data.experience %}
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                <div class="p-6">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                        <i class="fas fa-briefcase text-indigo-600 mr-2"></i> Work Experience
+                    </h3>
+                    <div class="space-y-6">
+                        {% for exp in resume.parsed_data.experience %}
+                        <div class="border-l-4 border-indigo-200 pl-4 relative">
+                            <div class="absolute -left-2.5 top-3 w-4 h-4 rounded-full bg-indigo-500 border-2 border-white"></div>
+                            <h4 class="font-bold text-gray-800">{{ exp.job_title }}</h4>
+                            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between text-gray-600 mb-2">
+                                <span>{{ exp.company }}</span>
+                                <span class="text-sm">
+                                    {{ exp.start_date }} - {{ exp.end_date or "Present" }}
+                                    {% if exp.employment_type %} • {{ exp.employment_type }}{% endif %}
+                                </span>
+                            </div>
+                            {% if exp.location %}
+                            <p class="text-sm text-gray-500 mb-3 flex items-center">
+                                <i class="fas fa-map-marker-alt text-xs mr-1"></i> {{ exp.location }}
+                            </p>
+                            {% endif %}
+                            {% if exp.responsibilities %}
+                            <ul class="list-disc list-inside space-y-1 text-gray-700">
+                                {% for resp in exp.responsibilities %}
+                                <li>{{ resp }}</li>
+                                {% endfor %}
+                            </ul>
+                            {% endif %}
+                            {% if exp.skills_used %}
+                            <div class="mt-3 flex flex-wrap gap-2">
+                                {% for skill in exp.skills_used %}
+                                <span class="bg-gray-100 text-gray-800 px-2 py-1 rounded-full text-xs">{{ skill }}</span>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Education -->
+            {% if resume.parsed_data.education %}
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                <div class="p-6">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                        <i class="fas fa-graduation-cap text-indigo-600 mr-2"></i> Education
+                    </h3>
+                    <div class="space-y-6">
+                        {% for edu in resume.parsed_data.education %}
+                        <div class="border-l-4 border-indigo-200 pl-4 relative">
+                            <div class="absolute -left-2.5 top-3 w-4 h-4 rounded-full bg-indigo-500 border-2 border-white"></div>
+                            <h4 class="font-bold text-gray-800">{{ edu.degree }}</h4>
+                            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between text-gray-600 mb-2">
+                                <span>{{ edu.institution }}</span>
+                                <span class="text-sm">
+                                    {{ edu.start_date }} - {{ edu.end_date or "Present" }}
+                                </span>
+                            </div>
+                            {% if edu.field %}
+                            <p class="text-gray-600 mb-1">{{ edu.field }}</p>
+                            {% endif %}
+                            {% if edu.grade %}
+                            <p class="text-gray-600 mb-1">Grade: {{ edu.grade }}</p>
+                            {% endif %}
+                            {% if edu.location %}
+                            <p class="text-sm text-gray-500 mb-3 flex items-center">
+                                <i class="fas fa-map-marker-alt text-xs mr-1"></i> {{ edu.location }}
+                            </p>
+                            {% endif %}
+                            {% if edu.courses %}
+                            <div class="mt-2">
+                                <h5 class="text-sm font-medium text-gray-700 mb-1">Relevant Courses:</h5>
+                                <div class="flex flex-wrap gap-2">
+                                    {% for course in edu.courses %}
+                                    <span class="bg-gray-100 text-gray-800 px-2 py-1 rounded-full text-xs">{{ course }}</span>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Projects -->
+            {% if resume.parsed_data.projects %}
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                <div class="p-6">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                        <i class="fas fa-project-diagram text-indigo-600 mr-2"></i> Projects
+                    </h3>
+                    <div class="grid md:grid-cols-2 gap-4">
+                        {% for project in resume.parsed_data.projects %}
+                        <div class="border rounded-lg p-4 hover:shadow-md transition-shadow">
+                            <h4 class="font-bold text-gray-800">{{ project.title }}</h4>
+                            {% if project.start_date %}
+                            <p class="text-sm text-gray-500 mb-2">
+                                {{ project.start_date }} - {{ project.end_date or "Present" }}
+                            </p>
+                            {% endif %}
+                            {% if project.description %}
+                            <p class="text-gray-700 text-sm mb-2">{{ project.description }}</p>
+                            {% endif %}
+                            {% if project.technologies %}
+                            <div class="mt-2 flex flex-wrap gap-2">
+                                {% for tech in project.technologies %}
+                                <span class="bg-indigo-50 text-indigo-800 px-2 py-1 rounded-full text-xs">{{ tech }}</span>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                            {% if project.link %}
+                            <a href="{{ project.link }}" target="_blank" class="mt-2 inline-flex items-center text-sm text-indigo-600 hover:underline">
+                                <i class="fas fa-external-link-alt mr-1"></i> View Project
+                            </a>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Certifications -->
+            {% if resume.parsed_data.certifications %}
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                <div class="p-6">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                        <i class="fas fa-certificate text-indigo-600 mr-2"></i> Certifications
+                    </h3>
+                    <div class="space-y-4">
+                        {% for cert in resume.parsed_data.certifications %}
+                        <div class="flex items-start">
+                            <div class="bg-indigo-100 text-indigo-600 p-2 rounded-lg mr-4">
+                                <i class="fas fa-award"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-800">{{ cert.title }}</h4>
+                                <p class="text-gray-600">{{ cert.issuer }}</p>
+                                <p class="text-sm text-gray-500">
+                                    Issued: {{ cert.issue_date }}
+                                    {% if cert.expiration_date %} • Expires: {{ cert.expiration_date }}{% endif %}
+                                </p>
+                                {% if cert.url %}
+                                <a href="{{ cert.url }}" target="_blank" class="mt-1 inline-flex items-center text-sm text-indigo-600 hover:underline">
+                                    <i class="fas fa-external-link-alt mr-1"></i> View Credential
+                                </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Additional Sections -->
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- Awards -->
+                {% if resume.parsed_data.awards %}
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                            <i class="fas fa-trophy text-indigo-600 mr-2"></i> Awards
+                        </h3>
+                        <div class="space-y-4">
+                            {% for award in resume.parsed_data.awards %}
+                            <div>
+                                <h4 class="font-bold text-gray-800">{{ award.title }}</h4>
+                                <p class="text-gray-600">{{ award.issuer }}</p>
+                                <p class="text-sm text-gray-500">{{ award.date }}</p>
+                                {% if award.description %}
+                                <p class="text-gray-700 text-sm mt-1">{{ award.description }}</p>
+                                {% endif %}
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- Volunteer Experience -->
+                {% if resume.parsed_data.volunteer_experience %}
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                            <i class="fas fa-hands-helping text-indigo-600 mr-2"></i> Volunteer Experience
+                        </h3>
+                        <div class="space-y-4">
+                            {% for vol in resume.parsed_data.volunteer_experience %}
+                            <div>
+                                <h4 class="font-bold text-gray-800">{{ vol.role }}</h4>
+                                <p class="text-gray-600">{{ vol.organization }}</p>
+                                <p class="text-sm text-gray-500">
+                                    {{ vol.start_date }} - {{ vol.end_date or "Present" }}
+                                </p>
+                                {% if vol.description %}
+                                <p class="text-gray-700 text-sm mt-1">{{ vol.description }}</p>
+                                {% endif %}
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

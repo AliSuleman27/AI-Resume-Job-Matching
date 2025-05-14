@@ -1,0 +1,166 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8 max-w-7xl">
+    <!-- Dashboard Header -->
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+        <div>
+            <h1 class="text-3xl font-bold text-primary-800 flex items-center">
+                <i class="fas fa-tachometer-alt text-primary-600 mr-3"></i>
+                Your Dashboard
+            </h1>
+            <p class="text-gray-600 mt-1">Welcome back, {{ current_user.email }}</p>
+        </div>
+        <div class="flex space-x-3">
+            <a href="{{ url_for('logout') }}" class="flex items-center px-4 py-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors">
+                <i class="fas fa-sign-out-alt mr-2"></i> Logout
+            </a>
+        </div>
+    </div>
+
+    <!-- Upload Card -->
+    <div class="bg-white rounded-xl shadow-md overflow-hidden mb-10 border border-gray-100">
+        <div class="p-6">
+            <div class="flex items-center mb-4">
+                <div class="bg-primary-100 p-3 rounded-full mr-4">
+                    <i class="fas fa-cloud-upload-alt text-primary-600 text-xl"></i>
+                </div>
+                <h2 class="text-2xl font-semibold text-gray-800">Upload New Resume</h2>
+            </div>
+            <p class="text-gray-600 mb-6">Upload your resume in PDF, DOCX, or TXT format to extract valuable insights</p>
+            {% include 'upload_form.html' %}
+        </div>
+    </div>
+
+    <!-- Resumes Section -->
+    <div>
+        <div class="flex items-center justify-between mb-6">
+            <h2 class="text-2xl font-semibold text-gray-800 flex items-center">
+                <i class="fas fa-file-alt text-primary-600 mr-3"></i>
+                Your Parsed Resumes
+            </h2>
+            <span class="bg-primary-100 text-primary-800 text-sm font-medium px-3 py-1 rounded-full">
+                {{ resumes|length }} {{ 'resume' if resumes|length == 1 else 'resumes' }}
+            </span>
+        </div>
+
+        {% if resumes %}
+        <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {% for resume in resumes %}
+            <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 border border-gray-100">
+                <div class="p-6">
+                    <div class="flex justify-between items-start mb-3">
+                        <div class="bg-primary-50 p-2 rounded-lg">
+                            <i class="fas fa-file-{{ 'pdf' if resume.original_filename.endswith('.pdf') else 'word' if resume.original_filename.endswith('.docx') else 'alt' }} text-primary-600"></i>
+                        </div>
+                        <span class="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
+                            {{ resume.created_at.strftime('%b %d, %Y') }}
+                        </span>
+                    </div>
+                    <h3 class="text-lg font-semibold text-gray-800 mb-2 truncate">{{ resume.original_filename }}</h3>
+                    <div class="flex justify-between items-center mt-6">
+                        <a href="{{ url_for('view_resume', resume_id=resume._id) }}" 
+                           class="text-primary-600 hover:text-primary-800 font-medium flex items-center">
+                            View Details <i class="fas fa-chevron-right ml-1 text-sm"></i>
+                        </a>
+                        <button class="text-gray-400 hover:text-gray-600">
+                            <i class="fas fa-ellipsis-v"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="bg-white rounded-xl shadow-sm p-8 text-center border border-gray-100">
+            <div class="mx-auto w-24 h-24 bg-primary-50 rounded-full flex items-center justify-center mb-4">
+                <i class="fas fa-file-import text-primary-600 text-3xl"></i>
+            </div>
+            <h3 class="text-xl font-medium text-gray-800 mb-2">No Resumes Yet</h3>
+            <p class="text-gray-600 mb-4">Upload your first resume to get started with parsing</p>
+            <a href="{{ url_for('index') }}" class="inline-flex items-center px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors">
+                <i class="fas fa-cloud-upload-alt mr-2"></i> Upload Resume
+            </a>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Add this to your dashboard.html after the resumes section -->
+<div class="mt-8">
+    <h2 class="text-xl font-semibold text-gray-900 mb-4">Recent Applications</h2>
+    
+    {% if applications %}
+    <div class="bg-white shadow rounded-lg overflow-hidden">
+        <div class="divide-y divide-gray-200">
+            {% for app in applications[:3] %}
+            <div class="p-4">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h3 class="font-medium text-gray-900">{{ app.job.parsed_data.job_title }}</h3>
+                        <p class="text-sm text-gray-500 mt-1">{{ app.job.company }}</p>
+                    </div>
+                    <span class="text-xs font-medium px-2 py-1 rounded-full 
+                        {% if app.status == 'submitted' %}bg-blue-100 text-blue-800
+                        {% elif app.status == 'reviewed' %}bg-purple-100 text-purple-800
+                        {% else %}bg-gray-100 text-gray-800{% endif %}">
+                        {{ app.status | capitalize }}
+                    </span>
+                </div>
+                <div class="mt-2 text-xs text-gray-500">
+                    Applied {{ app.applied_at.strftime('%b %d') }}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        {% if applications|length > 3 %}
+        <div class="px-4 py-3 bg-gray-50 text-right">
+            <a href="{{ url_for('my_applications') }}" class="text-sm font-medium text-primary-600 hover:text-primary-500">
+                View all applications <i class="fas fa-arrow-right ml-1"></i>
+            </a>
+        </div>
+        {% endif %}
+    </div>
+    {% else %}
+    <div class="bg-white shadow rounded-lg overflow-hidden">
+        <div class="p-4 text-center text-sm text-gray-500">
+            You haven't applied to any jobs yet.
+            <a href="{{ url_for('browse_jobs') }}" class="text-primary-600 hover:text-primary-500 ml-1">
+                Browse jobs
+            </a>
+        </div>
+    </div>
+    {% endif %}
+</div>
+</div>
+
+<!-- Empty state illustration (hidden by default) -->
+<div id="empty-state" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div class="bg-white rounded-xl p-8 max-w-md text-center">
+        <div class="mx-auto w-32 h-32 bg-primary-50 rounded-full flex items-center justify-center mb-6">
+            <i class="fas fa-file-import text-primary-600 text-5xl"></i>
+        </div>
+        <h3 class="text-2xl font-medium text-gray-800 mb-3">Let's Get Started!</h3>
+        <p class="text-gray-600 mb-6">Upload your first resume to begin extracting valuable insights and organizing your candidate data.</p>
+        <div class="flex justify-center space-x-4">
+            <button onclick="document.getElementById('empty-state').classList.add('hidden')" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">
+                Maybe Later
+            </button>
+            <a href="{{ url_for('index') }}" onclick="document.getElementById('empty-state').classList.add('hidden')" class="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700">
+                Upload Resume
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Show empty state modal if no resumes exist
+    document.addEventListener('DOMContentLoaded', function() {
+        {% if not resumes %}
+        setTimeout(() => {
+            document.getElementById('empty-state').classList.remove('hidden');
+        }, 1000);
+        {% endif %}
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,553 @@
+{% extends "base.html" %}
+
+{% block title %}Post New Job | NerdyParser.com{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="mb-8">
+        <h1 class="text-3xl font-bold text-gray-900">Post New Job</h1>
+        <p class="mt-2 text-sm text-gray-600">Fill out the form below to create a new job posting</p>
+    </div>
+
+    <div class="bg-white shadow rounded-lg overflow-hidden">
+        <div class="px-4 py-5 sm:px-6 border-b border-gray-200">
+            <h3 class="text-lg leading-6 font-medium text-gray-900">
+                Job Details
+            </h3>
+        </div>
+        
+        <div class="px-4 py-5 sm:p-6">
+            <form id="jobForm">
+                <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+                    <!-- Basic Information -->
+                    <div class="sm:col-span-6">
+                        <label for="title" class="block text-sm font-medium text-gray-700">Job Title *</label>
+                        <input type="text" name="title" id="title" required
+                               class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm">
+                    </div>
+
+                    <div class="sm:col-span-6">
+                        <label for="description" class="block text-sm font-medium text-gray-700">Job Description *</label>
+                        <div class="mt-1">
+                            <textarea id="description" name="description" rows="8" required
+                                      class="shadow-sm focus:ring-primary-500 focus:border-primary-500 block w-full sm:text-sm border border-gray-300 rounded-md"></textarea>
+                        </div>
+                        <p class="mt-2 text-sm text-gray-500">Detailed description of the job responsibilities and requirements.</p>
+                    </div>
+
+                    <div class="sm:col-span-6">
+                        <label for="summary" class="block text-sm font-medium text-gray-700">Short Summary</label>
+                        <input type="text" name="summary" id="summary"
+                               class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm">
+                        <p class="mt-2 text-sm text-gray-500">Brief summary that will appear in job listings (max 200 characters).</p>
+                    </div>
+
+                    <!-- Employment Details -->
+                    <div class="sm:col-span-2">
+                        <label for="employment_type" class="block text-sm font-medium text-gray-700">Employment Type *</label>
+                        <select id="employment_type" name="employment_type" required
+                                class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm rounded-md">
+                            <option value="full_time">Full-time</option>
+                            <option value="part_time">Part-time</option>
+                            <option value="contract">Contract</option>
+                            <option value="temporary">Temporary</option>
+                            <option value="internship">Internship</option>
+                            <option value="freelance">Freelance</option>
+                        </select>
+                    </div>
+
+                    <div class="sm:col-span-2">
+                        <label for="job_level" class="block text-sm font-medium text-gray-700">Job Level</label>
+                        <select id="job_level" name="job_level"
+                                class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm rounded-md">
+                            <option value="entry">Entry Level</option>
+                            <option value="mid">Mid Level</option>
+                            <option value="senior">Senior Level</option>
+                            <option value="lead">Lead</option>
+                            <option value="manager">Manager</option>
+                            <option value="director">Director</option>
+                            <option value="executive">Executive</option>
+                        </select>
+                    </div>
+
+                    <div class="sm:col-span-2">
+                        <label for="industry" class="block text-sm font-medium text-gray-700">Industry</label>
+                        <input type="text" name="industry" id="industry"
+                               class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm">
+                    </div>
+
+                    <div class="sm:col-span-3">
+                        <label for="department" class="block text-sm font-medium text-gray-700">Department</label>
+                        <input type="text" name="department" id="department"
+                               class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm">
+                    </div>
+
+                    <div class="sm:col-span-3">
+                        <label for="function" class="block text-sm font-medium text-gray-700">Function</label>
+                        <input type="text" name="function" id="function"
+                               class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm">
+                    </div>
+
+                    <!-- Location Information -->
+                    <div class="sm:col-span-6">
+                        <fieldset>
+                            <legend class="text-base font-medium text-gray-900">Location Options</legend>
+                            <div class="mt-4 space-y-4">
+                                <div class="flex items-center">
+                                    <input id="is_remote" name="is_remote" type="checkbox"
+                                           class="focus:ring-primary-500 h-4 w-4 text-primary-600 border-gray-300 rounded">
+                                    <label for="is_remote" class="ml-3 block text-sm font-medium text-gray-700">Fully Remote</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input id="is_hybrid" name="is_hybrid" type="checkbox"
+                                           class="focus:ring-primary-500 h-4 w-4 text-primary-600 border-gray-300 rounded">
+                                    <label for="is_hybrid" class="ml-3 block text-sm font-medium text-gray-700">Hybrid (Remote + Office)</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input id="is_onsite" name="is_onsite" type="checkbox"
+                                           class="focus:ring-primary-500 h-4 w-4 text-primary-600 border-gray-300 rounded">
+                                    <label for="is_onsite" class="ml-3 block text-sm font-medium text-gray-700">On-site Only</label>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+
+                    <!-- Locations Array -->
+                    <div class="sm:col-span-6">
+                        <div id="locationsContainer">
+                            <div class="flex justify-between items-center mb-2">
+                                <label class="block text-sm font-medium text-gray-700">Locations *</label>
+                                <button type="button" onclick="addLocationField()"
+                                        class="inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                                    Add Location
+                                </button>
+                            </div>
+                            <div class="location-field space-y-4">
+                                <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+                                    <div class="sm:col-span-2">
+                                        <input type="text" name="locations[0][city]" placeholder="City" required
+                                               class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm">
+                                    </div>
+                                    <div class="sm:col-span-2">
+                                        <input type="text" name="locations[0][state]" placeholder="State/Province"
+                                               class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm">
+                                    </div>
+                                    <div class="sm:col-span-1">
+                                        <input type="text" name="locations[0][country]" placeholder="Country" required
+                                               class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm">
+                                    </div>
+                                    <div class="sm:col-span-1">
+                                        <input type="text" name="locations[0][zip_code]" placeholder="ZIP/Postal Code"
+                                               class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Application Information -->
+                    <div class="sm:col-span-6">
+                        <label for="application_url" class="block text-sm font-medium text-gray-700">Application URL *</label>
+                        <input type="url" name="application_url" id="application_url" required
+                               class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm">
+                    </div>
+
+                    <div class="sm:col-span-3">
+                        <label for="posting_date" class="block text-sm font-medium text-gray-700">Posting Date *</label>
+                        <input type="datetime-local" name="posting_date" id="posting_date" required
+                               class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm">
+                    </div>
+
+                    <div class="sm:col-span-3">
+                        <label for="closing_date" class="block text-sm font-medium text-gray-700">Closing Date</label>
+                        <input type="datetime-local" name="closing_date" id="closing_date"
+                               class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm">
+                    </div>
+
+                    <!-- Salary Information -->
+                    <div class="sm:col-span-6">
+                        <label class="block text-sm font-medium text-gray-700">Salary Information</label>
+                        <div class="mt-1 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+                            <div class="sm:col-span-2">
+                                <input type="text" name="salary[currency]" placeholder="Currency (e.g., USD)"
+                                       class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm">
+                            </div>
+                            <div class="sm:col-span-2">
+                                <input type="number" name="salary[min]" placeholder="Minimum"
+                                       class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm">
+                            </div>
+                            <div class="sm:col-span-2">
+                                <input type="number" name="salary[max]" placeholder="Maximum"
+                                       class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm">
+                            </div>
+                            <div class="sm:col-span-3">
+                                <select name="salary[period]"
+                                        class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm rounded-md">
+                                    <option value="">Select Pay Period</option>
+                                    <option value="hour">Per Hour</option>
+                                    <option value="day">Per Day</option>
+                                    <option value="week">Per Week</option>
+                                    <option value="month">Per Month</option>
+                                    <option value="year">Per Year</option>
+                                </select>
+                            </div>
+                            <div class="sm:col-span-3 flex items-center">
+                                <input id="is_estimated" name="salary[is_estimated]" type="checkbox"
+                                       class="focus:ring-primary-500 h-4 w-4 text-primary-600 border-gray-300 rounded">
+                                <label for="is_estimated" class="ml-2 block text-sm text-gray-700">Is Estimated</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Benefits -->
+                    <div class="sm:col-span-6">
+                        <label for="benefits" class="block text-sm font-medium text-gray-700">Benefits (comma separated)</label>
+                        <input type="text" name="benefits" id="benefits"
+                               class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm">
+                    </div>
+
+                    <!-- Qualifications Section -->
+                    <div class="sm:col-span-6 border-t border-gray-200 pt-6">
+                        <h3 class="text-lg leading-6 font-medium text-gray-900">Qualifications</h3>
+                    </div>
+
+                    <!-- Education -->
+                    <div class="sm:col-span-6">
+                        <div id="educationContainer">
+                            <div class="flex justify-between items-center mb-2">
+                                <label class="block text-sm font-medium text-gray-700">Education Requirements</label>
+                                <button type="button" onclick="addEducationField()"
+                                        class="inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                                    Add Education
+                                </button>
+                            </div>
+                            <div class="education-field space-y-4">
+                                <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+                                    <div class="sm:col-span-2">
+                                        <input type="text" name="qualifications[education][0][degree]" placeholder="Degree"
+                                               class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm">
+                                    </div>
+                                    <div class="sm:col-span-2">
+                                        <input type="text" name="qualifications[education][0][field_of_study]" placeholder="Field of Study"
+                                               class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm">
+                                    </div>
+                                    <div class="sm:col-span-2">
+                                        <select name="qualifications[education][0][level]"
+                                                class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm rounded-md">
+                                            <option value="">Select Level</option>
+                                            <option value="high_school">High School</option>
+                                            <option value="associate">Associate</option>
+                                            <option value="bachelor">Bachelor</option>
+                                            <option value="master">Master</option>
+                                            <option value="phd">PhD</option>
+                                            <option value="other">Other</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Experience -->
+                    <div class="sm:col-span-6">
+                        <label class="block text-sm font-medium text-gray-700">Experience Requirements</label>
+                        <div class="mt-1 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+                            <div class="sm:col-span-3">
+                                <input type="number" name="qualifications[experience_years][min]" placeholder="Minimum Years"
+                                       class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm">
+                            </div>
+                            <div class="sm:col-span-3">
+                                <input type="number" name="qualifications[experience_years][max]" placeholder="Maximum Years"
+                                       class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Certifications -->
+                    <div class="sm:col-span-6">
+                        <label for="certifications" class="block text-sm font-medium text-gray-700">Certifications (comma separated)</label>
+                        <input type="text" name="qualifications[certifications]" id="certifications"
+                               class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm">
+                    </div>
+
+                    <!-- Skills Section -->
+                    <div class="sm:col-span-6 border-t border-gray-200 pt-6">
+                        <h3 class="text-lg leading-6 font-medium text-gray-900">Skills</h3>
+                    </div>
+
+                    <div class="sm:col-span-6">
+                        <label for="skills_mandatory" class="block text-sm font-medium text-gray-700">Required Skills (comma separated)</label>
+                        <input type="text" name="skills[mandatory]" id="skills_mandatory"
+                               class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm">
+                    </div>
+
+                    <div class="sm:col-span-6">
+                        <label for="skills_optional" class="block text-sm font-medium text-gray-700">Preferred Skills (comma separated)</label>
+                        <input type="text" name="skills[optional]" id="skills_optional"
+                               class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm">
+                    </div>
+
+                    <div class="sm:col-span-6">
+                        <label for="skills_tools" class="block text-sm font-medium text-gray-700">Tools (comma separated)</label>
+                        <input type="text" name="skills[tools]" id="skills_tools"
+                               class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm">
+                    </div>
+
+                    <!-- Languages Section -->
+                    <div class="sm:col-span-6">
+                        <div id="languagesContainer">
+                            <div class="flex justify-between items-center mb-2">
+                                <label class="block text-sm font-medium text-gray-700">Language Requirements</label>
+                                <button type="button" onclick="addLanguageField()"
+                                        class="inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                                    Add Language
+                                </button>
+                            </div>
+                            <div class="language-field space-y-4">
+                                <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+                                    <div class="sm:col-span-3">
+                                        <input type="text" name="languages[0][language]" placeholder="Language" required
+                                               class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm">
+                                    </div>
+                                    <div class="sm:col-span-3">
+                                        <select name="languages[0][proficiency]"
+                                                class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm rounded-md">
+                                            <option value="">Select Proficiency</option>
+                                            <option value="basic">Basic</option>
+                                            <option value="conversational">Conversational</option>
+                                            <option value="fluent">Fluent</option>
+                                            <option value="native">Native</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Job Content Section -->
+                    <div class="sm:col-span-6 border-t border-gray-200 pt-6">
+                        <h3 class="text-lg leading-6 font-medium text-gray-900">Job Content</h3>
+                    </div>
+
+                    <div class="sm:col-span-6">
+                        <label for="responsibilities" class="block text-sm font-medium text-gray-700">Responsibilities (one per line)</label>
+                        <textarea id="responsibilities" name="responsibilities" rows="4"
+                                  class="shadow-sm focus:ring-primary-500 focus:border-primary-500 block w-full sm:text-sm border border-gray-300 rounded-md"></textarea>
+                    </div>
+
+                    <div class="sm:col-span-6">
+                        <label for="requirements" class="block text-sm font-medium text-gray-700">Requirements (one per line)</label>
+                        <textarea id="requirements" name="requirements" rows="4"
+                                  class="shadow-sm focus:ring-primary-500 focus:border-primary-500 block w-full sm:text-sm border border-gray-300 rounded-md"></textarea>
+                    </div>
+
+                    <div class="sm:col-span-6">
+                        <label for="nice_to_have" class="block text-sm font-medium text-gray-700">Nice-to-have (one per line)</label>
+                        <textarea id="nice_to_have" name="nice_to_have" rows="4"
+                                  class="shadow-sm focus:ring-primary-500 focus:border-primary-500 block w-full sm:text-sm border border-gray-300 rounded-md"></textarea>
+                    </div>
+
+                    <!-- Company Information -->
+                    <div class="sm:col-span-6 border-t border-gray-200 pt-6">
+                        <h3 class="text-lg leading-6 font-medium text-gray-900">Company Information</h3>
+                    </div>
+
+                    <div class="sm:col-span-6">
+                        <label for="company_name" class="block text-sm font-medium text-gray-700">Company Name *</label>
+                        <input type="text" name="company[name]" id="company_name" required
+                               class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm">
+                    </div>
+
+                    <div class="sm:col-span-6">
+                        <label for="company_website" class="block text-sm font-medium text-gray-700">Company Website</label>
+                        <input type="url" name="company[website]" id="company_website"
+                               class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm">
+                    </div>
+
+                    <div class="sm:col-span-6">
+                        <label for="company_description" class="block text-sm font-medium text-gray-700">Company Description</label>
+                        <textarea id="company_description" name="company[description]" rows="4"
+                                  class="shadow-sm focus:ring-primary-500 focus:border-primary-500 block w-full sm:text-sm border border-gray-300 rounded-md"></textarea>
+                    </div>
+                </div>
+
+                <div class="mt-8 flex justify-end">
+                    <button type="button" onclick="window.history.back()"
+                            class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                        Cancel
+                    </button>
+                    <button type="submit"
+                            class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                        Post Job
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    let locationCount = 1;
+    let educationCount = 1;
+    let languageCount = 1;
+
+    function addLocationField() {
+        const container = document.getElementById('locationsContainer');
+        const newField = document.createElement('div');
+        newField.className = 'location-field mt-4 space-y-4';
+        newField.innerHTML = `
+            <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+                <div class="sm:col-span-2">
+                    <input type="text" name="locations[${locationCount}][city]" placeholder="City" required
+                           class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm">
+                </div>
+                <div class="sm:col-span-2">
+                    <input type="text" name="locations[${locationCount}][state]" placeholder="State/Province"
+                           class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm">
+                </div>
+                <div class="sm:col-span-1">
+                    <input type="text" name="locations[${locationCount}][country]" placeholder="Country" required
+                           class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm">
+                </div>
+                <div class="sm:col-span-1 flex items-center">
+                    <button type="button" onclick="this.parentNode.parentNode.parentNode.remove()"
+                            class="inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded text-red-700 bg-red-100 hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                        Remove
+                    </button>
+                </div>
+            </div>
+        `;
+        container.appendChild(newField);
+        locationCount++;
+    }
+
+    function addEducationField() {
+        const container = document.getElementById('educationContainer');
+        const newField = document.createElement('div');
+        newField.className = 'education-field mt-4 space-y-4';
+        newField.innerHTML = `
+            <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+                <div class="sm:col-span-2">
+                    <input type="text" name="qualifications[education][${educationCount}][degree]" placeholder="Degree"
+                           class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm">
+                </div>
+                <div class="sm:col-span-2">
+                    <input type="text" name="qualifications[education][${educationCount}][field_of_study]" placeholder="Field of Study"
+                           class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm">
+                </div>
+                <div class="sm:col-span-1">
+                    <select name="qualifications[education][${educationCount}][level]"
+                            class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm rounded-md">
+                        <option value="">Select Level</option>
+                        <option value="high_school">High School</option>
+                        <option value="associate">Associate</option>
+                        <option value="bachelor">Bachelor</option>
+                        <option value="master">Master</option>
+                        <option value="phd">PhD</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="sm:col-span-1 flex items-center">
+                    <button type="button" onclick="this.parentNode.parentNode.parentNode.remove()"
+                            class="inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded text-red-700 bg-red-100 hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                        Remove
+                    </button>
+                </div>
+            </div>
+        `;
+        container.appendChild(newField);
+        educationCount++;
+    }
+
+    function addLanguageField() {
+        const container = document.getElementById('languagesContainer');
+        const newField = document.createElement('div');
+        newField.className = 'language-field mt-4 space-y-4';
+        newField.innerHTML = `
+            <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+                <div class="sm:col-span-3">
+                    <input type="text" name="languages[${languageCount}][language]" placeholder="Language" required
+                           class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm">
+                </div>
+                <div class="sm:col-span-2">
+                    <select name="languages[${languageCount}][proficiency]"
+                            class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm rounded-md">
+                        <option value="">Select Proficiency</option>
+                        <option value="basic">Basic</option>
+                        <option value="conversational">Conversational</option>
+                        <option value="fluent">Fluent</option>
+                        <option value="native">Native</option>
+                    </select>
+                </div>
+                <div class="sm:col-span-1 flex items-center">
+                    <button type="button" onclick="this.parentNode.parentNode.parentNode.remove()"
+                            class="inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded text-red-700 bg-red-100 hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                        Remove
+                    </button>
+                </div>
+            </div>
+        `;
+        container.appendChild(newField);
+        languageCount++;
+    }
+
+    document.getElementById('jobForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const formData = new FormData(e.target);
+        const data = {};
+        
+        // Convert FormData to JSON
+        formData.forEach((value, key) => {
+            // Handle nested objects
+            if (key.includes('[') && key.includes(']')) {
+                const keys = key.split(/\[|\]/).filter(k => k !== '');
+                let current = data;
+                
+                for (let i = 0; i < keys.length - 1; i++) {
+                    const k = keys[i];
+                    if (!current[k]) {
+                        current[k] = isNaN(keys[i+1]) ? {} : [];
+                    }
+                    current = current[k];
+                }
+                
+                current[keys[keys.length - 1]] = value;
+            } else {
+                data[key] = value;
+            }
+        });
+
+        // Handle checkboxes
+        data.is_remote = document.getElementById('is_remote').checked;
+        data.is_hybrid = document.getElementById('is_hybrid').checked;
+        data.is_onsite = document.getElementById('is_onsite').checked;
+        
+        // Handle textarea arrays
+        data.responsibilities = document.getElementById('responsibilities').value.split('\n').filter(line => line.trim() !== '');
+        data.requirements = document.getElementById('requirements').value.split('\n').filter(line => line.trim() !== '');
+        data.nice_to_have = document.getElementById('nice_to_have').value.split('\n').filter(line => line.trim() !== '');
+        
+        try {
+            const response = await fetch('{{ url_for("new_job") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            });
+            
+            const result = await response.json();
+            
+            if (response.ok) {
+                window.location.href = `/recruiter/job/${result.job_id}`;
+            } else {
+                alert(`Error: ${result.error}`);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('An error occurred while submitting the form');
+        }
+    });
+</script>
+{% endblock %}
