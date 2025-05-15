@@ -120,16 +120,8 @@
                         </td>
                         <td class="px-6 py-4">
                             <div class="text-sm text-gray-900">
-                                {% set total_exp = 0 %}
-                                {% for exp in app.resume_data.get('experience', []) %}
-                                    {% if exp.start_date and exp.end_date %}
-                                        {% set start = exp.start_date|string %}
-                                        {% set end = exp.end_date|string if exp.end_date else now|string %}
-                                        {% set years = (end|string_to_date - start|string_to_date).days / 365.25 %}
-                                        {% set total_exp = total_exp + years %}
-                                    {% endif %}
-                                {% endfor %}
-                                {{ total_exp|round(1) }} years
+                                {{ app.total_experience }} years
+
                             </div>
                         </td>
                         <td class="px-6 py-4">

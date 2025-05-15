@@ -1,0 +1,471 @@
+{
+    "basic_info": {
+        "full_name": "Hilal Aziz",
+        "current_title": "AI Software Engineer Intern",
+        "gender": null,
+        "date_of_birth": null,
+        "nationality": null
+    },
+    "contact_info": {
+        "email": "muhammadhilalaziz@gmail.com",
+        "phone": "+92-3330677748",
+        "address": {
+            "street": null,
+            "city": "Karachi",
+            "state": null,
+            "zip_code": null,
+            "country": "Pakistan"
+        },
+        "linkedin": "hilalaziz32",
+        "github": "hilalaziz32",
+        "portfolio": null
+    },
+    "summary": null,
+    "skills": [
+        {
+            "skill_name": "Python",
+            "proficiency": null,
+            "category": "Programming Language",
+            "years_of_experience": null
+        },
+        {
+            "skill_name": "SQL",
+            "proficiency": null,
+            "category": "Database",
+            "years_of_experience": null
+        },
+        {
+            "skill_name": "C++",
+            "proficiency": null,
+            "category": "Programming Language",
+            "years_of_experience": null
+        },
+        {
+            "skill_name": "Dart",
+            "proficiency": null,
+            "category": "Programming Language",
+            "years_of_experience": null
+        },
+        {
+            "skill_name": "Java",
+            "proficiency": null,
+            "category": "Programming Language",
+            "years_of_experience": null
+        },
+        {
+            "skill_name": "Bash",
+            "proficiency": null,
+            "category": "Scripting Language",
+            "years_of_experience": null
+        },
+        {
+            "skill_name": "Prolog",
+            "proficiency": null,
+            "category": "Programming Language",
+            "years_of_experience": null
+        },
+        {
+            "skill_name": "TensorFlow",
+            "proficiency": null,
+            "category": "Machine Learning Framework",
+            "years_of_experience": null
+        },
+        {
+            "skill_name": "PyTorch",
+            "proficiency": null,
+            "category": "Machine Learning Framework",
+            "years_of_experience": null
+        },
+        {
+            "skill_name": "LangChain",
+            "proficiency": null,
+            "category": "Machine Learning Framework",
+            "years_of_experience": null
+        },
+        {
+            "skill_name": "Scikit-learn",
+            "proficiency": null,
+            "category": "Machine Learning Library",
+            "years_of_experience": null
+        },
+        {
+            "skill_name": "NLTK",
+            "proficiency": null,
+            "category": "Natural Language Processing Library",
+            "years_of_experience": null
+        },
+        {
+            "skill_name": "SpaCy",
+            "proficiency": null,
+            "category": "Natural Language Processing Library",
+            "years_of_experience": null
+        },
+        {
+            "skill_name": "Flask",
+            "proficiency": null,
+            "category": "Web Framework",
+            "years_of_experience": null
+        },
+        {
+            "skill_name": "OpenCV",
+            "proficiency": null,
+            "category": "Computer Vision Library",
+            "years_of_experience": null
+        },
+        {
+            "skill_name": "Git",
+            "proficiency": null,
+            "category": "Version Control System",
+            "years_of_experience": null
+        },
+        {
+            "skill_name": "MySQL",
+            "proficiency": null,
+            "category": "Database Management System",
+            "years_of_experience": null
+        },
+        {
+            "skill_name": "PowerBI",
+            "proficiency": null,
+            "category": "Business Intelligence Tool",
+            "years_of_experience": null
+        },
+        {
+            "skill_name": "AWS",
+            "proficiency": null,
+            "category": "Cloud Computing Platform",
+            "years_of_experience": null
+        },
+        {
+            "skill_name": "GCP",
+            "proficiency": null,
+            "category": "Cloud Computing Platform",
+            "years_of_experience": null
+        },
+        {
+            "skill_name": "Linux",
+            "proficiency": null,
+            "category": "Operating System",
+            "years_of_experience": null
+        },
+        {
+            "skill_name": "LSTM",
+            "proficiency": null,
+            "category": "Machine Learning Concept",
+            "years_of_experience": null
+        },
+        {
+            "skill_name": "RAG",
+            "proficiency": null,
+            "category": "Machine Learning Concept",
+            "years_of_experience": null
+        },
+        {
+            "skill_name": "NLP",
+            "proficiency": null,
+            "category": "Machine Learning Concept",
+            "years_of_experience": null
+        },
+        {
+            "skill_name": "Time Series Forecasting",
+            "proficiency": null,
+            "category": "Machine Learning Concept",
+            "years_of_experience": null
+        },
+        {
+            "skill_name": "Recommender Systems",
+            "proficiency": null,
+            "category": "Machine Learning Concept",
+            "years_of_experience": null
+        },
+        {
+            "skill_name": "Knowledge Graphs",
+            "proficiency": null,
+            "category": "Machine Learning Concept",
+            "years_of_experience": null
+        }
+    ],
+    "education": [
+        {
+            "degree": "Bachelor of Science in Artificial Intelligence",
+            "field": "Artificial Intelligence",
+            "institution": "FAST National University of Computer and Emerging Sciences",
+            "start_date": "2022-08-01",
+            "end_date": "2026-08-01",
+            "grade": null,
+            "location": "Karachi, Pakistan",
+            "courses": [
+                "Operating Systems",
+                "Algorithms",
+                "Data Structures",
+                "Artificial Intelligence",
+                "Machine Learning",
+                "Deep Learning",
+                "NLP",
+                "CV",
+                "Recommender Systems",
+                "Databases",
+                "Networking"
+            ]
+        },
+        {
+            "degree": "FSc - Computer Science",
+            "field": "Computer Science",
+            "institution": "Cadet College Petaro",
+            "start_date": "2017-05-01",
+            "end_date": "2022-06-01",
+            "grade": null,
+            "location": "Sindh, Pakistan",
+            "courses": []
+        }
+    ],
+    "experience": [
+        {
+            "job_title": "AI Software Engineer Intern",
+            "company": "Wellness Innovation, LLC",
+            "start_date": "2025-03-01",
+            "end_date": null,
+            "employment_type": "Intern",
+            "location": "Remote",
+            "responsibilities": [
+                "Enhanced AI agents using ontologies, RAG pipelines, and knowledge graphs for code reasoning and understanding",
+                "Built a GenAI-powered Database Agent that performs user prompt interpretation, competitive DB analysis, ERD/BDS generation, auto-schema + procedure creation (CRUD), and logs publishing to GCP Pub/Sub"
+            ],
+            "skills_used": []
+        },
+        {
+            "job_title": "Data Science Mentor - Fintech and AI",
+            "company": null,
+            "start_date": "2024-09-01",
+            "end_date": null,
+            "employment_type": "Freelance",
+            "location": "Karachi, Pakistan",
+            "responsibilities": [
+                "Mentored students in building ML pipelines, financial prediction models, Data-Science, and real-world AI projects"
+            ],
+            "skills_used": []
+        }
+    ],
+    "projects": [
+        {
+            "title": "Stock Price Predictor (PSX)",
+            "description": "Scraped the entire Pakistan Stock Exchange, engineered financial features, and built LSTM-based models for price forecasting",
+            "technologies": [
+                "LSTM",
+                "Python"
+            ],
+            "role": null,
+            "start_date": null,
+            "end_date": null,
+            "link": null
+        },
+        {
+            "title": "Multi-Domain Recommender Systems",
+            "description": "Built four systems for books, movies, music (Spotify), and images using collaborative filtering, hybrid models, and computer vision techniques",
+            "technologies": [
+                "Collaborative Filtering",
+                "Hybrid Models",
+                "Computer Vision"
+            ],
+            "role": null,
+            "start_date": null,
+            "end_date": null,
+            "link": null
+        },
+        {
+            "title": "QA Chatbot (LangChain + Watsonx)",
+            "description": "RAG-based chatbot with Watsonx embeddings, FaissDB retrieval, and dynamic context windowing",
+            "technologies": [
+                "LangChain",
+                "Watsonx",
+                "FaissDB"
+            ],
+            "role": null,
+            "start_date": null,
+            "end_date": null,
+            "link": null
+        },
+        {
+            "title": "Semantic Text Classifier (RDF Ontology)",
+            "description": "Used RDF Turtle and SentenceTransformer embeddings to classify religion-related subreddit posts based on semantic and hierarchical relationships",
+            "technologies": [
+                "RDF Turtle",
+                "SentenceTransformer"
+            ],
+            "role": null,
+            "start_date": null,
+            "end_date": null,
+            "link": null
+        },
+        {
+            "title": "Finance-Aware Web Crawler",
+            "description": "Built a crawler for finance news that stores articles in a DB and decomposes user queries into sub-queries to return highly relevant contextual results",
+            "technologies": [
+                "Python",
+                "Database"
+            ],
+            "role": null,
+            "start_date": null,
+            "end_date": null,
+            "link": null
+        },
+        {
+            "title": "Exploratory AI Portfolio",
+            "description": "Worked with 100+ real-world datasets across domains including health, retail, finance, NLP, and CV",
+            "technologies": [
+                "Python",
+                "Machine Learning"
+            ],
+            "role": null,
+            "start_date": null,
+            "end_date": null,
+            "link": null
+        }
+    ],
+    "certifications": [
+        {
+            "title": "AWS: Cloud Support Associate",
+            "issuer": "AWS",
+            "issue_date": null,
+            "expiration_date": null,
+            "credential_id": null,
+            "url": null
+        },
+        {
+            "title": "AWS: Serverless Apps in Python",
+            "issuer": "AWS",
+            "issue_date": null,
+            "expiration_date": null,
+            "credential_id": null,
+            "url": null
+        },
+        {
+            "title": "AWS: Cloud Essentials",
+            "issuer": "AWS",
+            "issue_date": null,
+            "expiration_date": null,
+            "credential_id": null,
+            "url": null
+        },
+        {
+            "title": "AWS: Storage",
+            "issuer": "AWS",
+            "issue_date": null,
+            "expiration_date": null,
+            "credential_id": null,
+            "url": null
+        },
+        {
+            "title": "AWS: Compute",
+            "issuer": "AWS",
+            "issue_date": null,
+            "expiration_date": null,
+            "credential_id": null,
+            "url": null
+        },
+        {
+            "title": "AWS: Automation",
+            "issuer": "AWS",
+            "issue_date": null,
+            "expiration_date": null,
+            "credential_id": null,
+            "url": null
+        },
+        {
+            "title": "IBM: Applied Data Science Capstone",
+            "issuer": "IBM",
+            "issue_date": null,
+            "expiration_date": null,
+            "credential_id": null,
+            "url": null
+        },
+        {
+            "title": "IBM: Generative AI with RAG",
+            "issuer": "IBM",
+            "issue_date": null,
+            "expiration_date": null,
+            "credential_id": null,
+            "url": null
+        },
+        {
+            "title": "IBM: Databases + SQL",
+            "issuer": "IBM",
+            "issue_date": null,
+            "expiration_date": null,
+            "credential_id": null,
+            "url": null
+        },
+        {
+            "title": "Coursera/NYIF: ML for Trading",
+            "issuer": "Coursera/NYIF",
+            "issue_date": null,
+            "expiration_date": null,
+            "credential_id": null,
+            "url": null
+        },
+        {
+            "title": "Coursera/NYIF: Using ML in Finance",
+            "issuer": "Coursera/NYIF",
+            "issue_date": null,
+            "expiration_date": null,
+            "credential_id": null,
+            "url": null
+        },
+        {
+            "title": "Coursera/NYIF: GenAI Summarization with LangChain",
+            "issuer": "Coursera/NYIF",
+            "issue_date": null,
+            "expiration_date": null,
+            "credential_id": null,
+            "url": null
+        },
+        {
+            "title": "LangChain.js (Scrimba)",
+            "issuer": "Scrimba",
+            "issue_date": null,
+            "expiration_date": null,
+            "credential_id": null,
+            "url": null
+        },
+        {
+            "title": "Supervised ML (DeepLearning.AI)",
+            "issuer": "DeepLearning.AI",
+            "issue_date": null,
+            "expiration_date": null,
+            "credential_id": null,
+            "url": null
+        },
+        {
+            "title": "Modeling in AWS (Whizlabs)",
+            "issuer": "Whizlabs",
+            "issue_date": null,
+            "expiration_date": null,
+            "credential_id": null,
+            "url": null
+        }
+    ],
+    "publications": [],
+    "languages": [
+        {
+            "language": "English",
+            "proficiency": null
+        }
+    ],
+    "interests": [],
+    "volunteer_experience": [],
+    "awards": [],
+    "links": [
+        {
+            "label": "LinkedIn",
+            "url": "https://www.linkedin.com/in/hilalaziz32"
+        },
+        {
+            "label": "GitHub",
+            "url": "https://github.com/hilalaziz32"
+        },
+        {
+            "label": "YouTube",
+            "url": "https://www.youtube.com/channel/CodersPlayground"
+        }
+    ]
+}

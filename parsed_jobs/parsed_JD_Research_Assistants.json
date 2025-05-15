@@ -1,0 +1,102 @@
+{
+    "job_id": "00000000-0000-0000-0000-000000000001",
+    "title": "Research Assistant/Associate",
+    "description": "Research Assistant/Associate Job Description",
+    "summary": "Research Assistant/Associate to assist in carrying out a particular research agenda",
+    "employment_type": "part_time",
+    "industry": "Education",
+    "department": "Research",
+    "function": "Research Assistance",
+    "job_level": "entry",
+    "locations": [
+        {
+            "city": "",
+            "state": "",
+            "country": "USA",
+            "zip_code": "",
+            "remote": false
+        }
+    ],
+    "is_remote": false,
+    "is_hybrid": false,
+    "is_onsite": true,
+    "application_url": null,
+    "posting_date": null,
+    "closing_date": null,
+    "salary": {
+        "currency": "USD",
+        "min": 0,
+        "max": 0,
+        "period": null,
+        "is_estimated": true
+    },
+    "benefits": [],
+    "qualifications": {
+        "education": [
+            {
+                "degree": "",
+                "field_of_study": "",
+                "level": null
+            }
+        ],
+        "experience_years": {
+            "min": 0,
+            "max": 0
+        },
+        "certifications": []
+    },
+    "skills": {
+        "mandatory": [
+            "Academic and/or work experience related to the field of research",
+            "Experience with specialized software or datasets"
+        ],
+        "optional": [],
+        "tools": []
+    },
+    "languages": [
+        {
+            "language": "English",
+            "proficiency": "fluent"
+        }
+    ],
+    "responsibilities": [
+        "Conduct literature reviews",
+        "Collect and analyze data",
+        "Prepare materials for submission to granting agencies and foundations",
+        "Prepare materials for UW Human Subjects Committee review",
+        "Prepare interview questions",
+        "Recruit and/or interview subjects",
+        "Maintain accurate records of interviews, safeguarding the confidentiality of subjects, as necessary",
+        "Summarize interviews",
+        "Provide ready access to all experimental data for the faculty researcher and/or supervisor",
+        "Request or acquire equipment or supplies necessary for the project",
+        "Manage and respond to project related email",
+        "Prepare, maintain, and update website materials",
+        "Supervise undergraduate students working on the research project",
+        "Attend project meetings",
+        "Attend area seminars and other meetings as necessary",
+        "Summarize project results",
+        "Prepare progress reports for the PI and funding agency",
+        "Prepare other articles, reports, and presentations",
+        "Monitor the project budget"
+    ],
+    "requirements": [
+        "Satisfactory academic progress, as defined by the supervisor"
+    ],
+    "nice_to_have": [],
+    "company": {
+        "name": "University of Washington",
+        "website": null,
+        "description": ""
+    },
+    "analytics": {
+        "views": 0,
+        "applications": 0
+    },
+    "metadata": {
+        "created_at": "2024-05-14",
+        "updated_at": "2024-05-14",
+        "created_by_user_id": "00000000-0000-0000-0000-000000000000",
+        "source": "manual_post"
+    }
+}

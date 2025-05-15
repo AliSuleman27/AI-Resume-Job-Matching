@@ -145,8 +145,15 @@ def recruiter_dashboard():
         flash('Access denied', 'error')
         return redirect(url_for('index'))
     
+    # Get all jobs by this recruiter
     jobs = list(jobs_collection.find({'recruiter_id': ObjectId(current_user.id)}))
-    return render_template('recruiter_dashboard.html', jobs=jobs)
+    job_ids = [job['_id'] for job in jobs]
+
+    # Count total applicants across all jobs
+    total_applicants = applications_collection.count_documents({'job_id': {'$in': job_ids}}) if job_ids else 0
+
+    return render_template('recruiter_dashboard.html', jobs=jobs, total_applicants=total_applicants)
+
 
 @app.route('/recruiter/create_job', methods=['GET', 'POST'])
 @login_required
@@ -440,8 +447,8 @@ def view_job_applicants(job_id):
                     end = datetime.strptime(exp['end_date'], "%Y-%m-%d") if exp['end_date'] else datetime.now()
                     total_exp += (end - start).days / 365.25
                 except:
-                    continue
-        
+                    continue        
+                
         exp_level = 'Junior' if total_exp < 3 else 'Mid-level' if total_exp < 7 else 'Senior'
         experience_levels[exp_level] += 1
     
@@ -486,10 +493,9 @@ def recruiter_view_resume(resume_id):
     return render_template('recruiter/resume_view.html', resume=resume)
 
 
-
-
-
+# ------------------------------------------------------------------------------------------
 # User/Applicant Specific Routes, Services 
+# ------------------------------------------------------------------------------------------
 def call_llm(resume_text: str) -> dict:
     """Calls the Groq API to parse resume text."""
     try:
@@ -543,10 +549,9 @@ def extract_text_from_file(file_path: str, file_type: str) -> str:
         logger.error(f"Error extracting text: {str(e)}")
         raise
 
-
-@app.route('/')
+@app.route('/upload_cv')
 @login_required  # Add this decorator to protect the index page
-def index():
+def upload_cv():
     return render_template('index.html')
 
 @app.route('/signup', methods=['GET', 'POST'])
@@ -848,9 +853,16 @@ def my_applications():
     return render_template('applications/list.html', applications=applications)
 
 
+@app.route("/")
+def landing():
+    return render_template('landing.html')
+
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
+
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)

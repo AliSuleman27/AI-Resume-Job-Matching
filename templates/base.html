@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Resume Parser Pro | NerdyParser.com{% endblock %}</title>
+    <title>{% block title %}Resume Parser Pro | Emploify.io{% endblock %}</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -26,6 +26,20 @@
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
                     },
+                    animation: {
+                        'fade-in': 'fadeIn 0.3s ease-in-out',
+                        'slide-down': 'slideDown 0.3s ease-out',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        slideDown: {
+                            '0%': { transform: 'translateY(-10px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        }
+                    }
                 }
             }
         }
@@ -35,148 +49,171 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}">
 </head>
-<body class="bg-gray-50 min-h-screen flex flex-col font-sans">
+<body class="bg-gray-50 min-h-screen flex flex-col font-sans antialiased">
     <!-- Navigation -->
-    <nav class="bg-white shadow-sm">
+    <nav class="bg-white shadow-sm sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16">
+            <div class="flex justify-between h-20 items-center">
+                <!-- Improved Logo -->
                 <div class="flex items-center">
-                    <a href="" class="flex-shrink-0 flex items-center">
-                        <i class="fas fa-brain text-primary-600 text-2xl mr-2"></i>
-                        <span class="text-xl font-bold text-primary-800">Nerdy<span class="text-primary-600">Parser</span>.com</span>
+                    <a href="/" class="flex items-center space-x-3 group">
+                        <div class="flex items-center justify-center w-10 h-10 rounded-lg bg-primary-600 group-hover:bg-primary-700 transition-colors duration-200">
+                            <i class="fas fa-briefcase text-white text-xl transform group-hover:scale-110 transition-transform"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-xl font-bold text-gray-900 leading-tight">
+                                Emploify<span class="text-primary-600">.io</span>
+                            </span>
+                            <span class="text-xs text-gray-500 leading-tight">Smart Hiring. Better Matching.</span>
+                        </div>
                     </a>
                 </div>
                 
-                {% if current_user.is_authenticated %}
-                    {% if current_user.__class__.__name__ == 'Recruiter' %}
-                        <!-- Recruiter Navigation -->
-                        <div class="hidden sm:ml-6 sm:flex sm:items-center space-x-4">
-                            <a href="{{ url_for('recruiter_dashboard') }}" class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-primary-600 hover:bg-primary-50 transition-colors">
-                                <i class="fas fa-tachometer-alt mr-1"></i> Dashboard
+                <!-- Desktop Navigation -->
+                <div class="hidden sm:flex items-center space-x-1">
+                    {% if current_user.is_authenticated %}
+                        {% if current_user.__class__.__name__ == 'Recruiter' %}
+                            <!-- Recruiter Navigation -->
+                            <a href="{{ url_for('recruiter_dashboard') }}" class="px-4 py-2 rounded-lg text-sm font-medium text-gray-700 hover:text-primary-600 hover:bg-primary-50 transition-all duration-200 flex items-center">
+                                <i class="fas fa-tachometer-alt mr-2"></i> Dashboard
                             </a>
-                            <a href="{{ url_for('create_job') }}" class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-primary-600 hover:bg-primary-50 transition-colors">
-                                <i class="fas fa-plus-circle mr-1"></i> Post Job
+                            <a href="{{ url_for('create_job') }}" class="px-4 py-2 rounded-lg text-sm font-medium text-gray-700 hover:text-primary-600 hover:bg-primary-50 transition-all duration-200 flex items-center">
+                                <i class="fas fa-plus-circle mr-2"></i> Post Job
                             </a>
-                            <a href="#" class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-primary-600 hover:bg-primary-50 transition-colors">
-                                <i class="fas fa-list-ul mr-1"></i> My Jobs
+                            <a href="#" class="px-4 py-2 rounded-lg text-sm font-medium text-gray-700 hover:text-primary-600 hover:bg-primary-50 transition-all duration-200 flex items-center">
+                                <i class="fas fa-list-ul mr-2"></i> My Jobs
                             </a>
-                            <a href="{{ url_for('view_applicants') }}" class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-primary-600 hover:bg-primary-50 transition-colors">
-                                <i class="fas fa-users mr-1"></i> Applicants
+                            <a href="{{ url_for('view_applicants') }}" class="px-4 py-2 rounded-lg text-sm font-medium text-gray-700 hover:text-primary-600 hover:bg-primary-50 transition-all duration-200 flex items-center">
+                                <i class="fas fa-users mr-2"></i> Applicants
                             </a>
-                            <div class="relative group">
-                                <button class="flex items-center space-x-1 px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-primary-600 hover:bg-primary-50 transition-colors">
-                                    <i class="fas fa-user-circle mr-1"></i> {{ current_user.name }}
-                                    <i class="fas fa-chevron-down ml-1 text-xs"></i>
+                            <div class="relative group ml-2">
+                                <button class="flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium text-gray-700 hover:text-primary-600 hover:bg-primary-50 transition-all duration-200">
+                                    <div class="w-8 h-8 rounded-full bg-primary-100 flex items-center justify-center text-primary-600">
+                                        <i class="fas fa-user"></i>
+                                    </div>
+                                    <span>{{ current_user.name.split(' ')[0] }}</span>
+                                    <i class="fas fa-chevron-down text-xs transform transition-transform duration-200 group-hover:rotate-180"></i>
                                 </button>
-                                <div class="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 hidden group-hover:block">
+                                <div class="absolute right-0 mt-2 w-56 origin-top-right rounded-lg shadow-lg bg-white ring-1 ring-black ring-opacity-5 animate-slide-down hidden group-hover:block">
                                     <div class="py-1">
-                                        <a href="" class="block px-4 py-2 text-sm text-gray-700 hover:bg-primary-50 hover:text-primary-600">
-                                            <i class="fas fa-user-edit mr-2"></i> Profile
+                                        <a href="" class="block px-4 py-2 text-sm text-gray-700 hover:bg-primary-50 hover:text-primary-600 transition-colors duration-150 flex items-center">
+                                            <i class="fas fa-user-edit mr-3 w-5 text-center"></i> Profile
                                         </a>
-                                        <a href="{{ url_for('logout') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-primary-50 hover:text-primary-600">
-                                            <i class="fas fa-sign-out-alt mr-2"></i> Logout
+                                        <a href="{{ url_for('logout') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-primary-50 hover:text-primary-600 transition-colors duration-150 flex items-center">
+                                            <i class="fas fa-sign-out-alt mr-3 w-5 text-center"></i> Logout
                                         </a>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        {% else %}
+                            <!-- Applicant Navigation -->
+                            <a href="{{ url_for('dashboard') }}" class="px-4 py-2 rounded-lg text-sm font-medium text-gray-700 hover:text-primary-600 hover:bg-primary-50 transition-all duration-200 flex items-center">
+                                <i class="fas fa-tachometer-alt mr-2"></i> Dashboard
+                            </a>
+                            <a href="{{ url_for('browse_jobs') }}" class="px-4 py-2 rounded-lg text-sm font-medium text-gray-700 hover:text-primary-600 hover:bg-primary-50 transition-all duration-200 flex items-center">
+                                <i class="fas fa-briefcase mr-2"></i> Jobs
+                            </a>
+                            <a href="{{ url_for('my_applications') }}" class="px-4 py-2 rounded-lg text-sm font-medium text-gray-700 hover:text-primary-600 hover:bg-primary-50 transition-all duration-200 flex items-center">
+                                <i class="fas fa-file-alt mr-2"></i> Applications
+                            </a>
+                            <a href="{{ url_for('upload_cv') }}" class="px-4 py-2 rounded-lg text-sm font-medium text-gray-700 hover:text-primary-600 hover:bg-primary-50 transition-all duration-200 flex items-center">
+                                <i class="fas fa-upload mr-2"></i> Upload Resume
+                            </a>
+                            <div class="relative group ml-2">
+                                <button class="flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium text-gray-700 hover:text-primary-600 hover:bg-primary-50 transition-all duration-200">
+                                    <div class="w-8 h-8 rounded-full bg-primary-100 flex items-center justify-center text-primary-600">
+                                        <i class="fas fa-user"></i>
+                                    </div>
+                                    <span>{{ current_user.email.split('@')[0] }}</span>
+                                </button>
+                                <div class="absolute right-0 mt-2 w-56 origin-top-right rounded-lg shadow-lg bg-white ring-1 ring-black ring-opacity-5 animate-slide-down hidden group-hover:block">
+                                    <div class="py-1">
+                                        <a href="" class="block px-4 py-2 text-sm text-gray-700 hover:bg-primary-50 hover:text-primary-600 transition-colors duration-150 flex items-center">
+                                            <i class="fas fa-user-edit mr-3 w-5 text-center"></i> Profile
+                                        </a>
+                                        <a href="{{ url_for('logout') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-primary-50 hover:text-primary-600 transition-colors duration-150 flex items-center">
+                                            <i class="fas fa-sign-out-alt mr-3 w-5 text-center"></i> Logout
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
                     {% else %}
-                        <!-- Applicant Navigation -->
-                        <div class="hidden sm:ml-6 sm:flex sm:items-center space-x-4">
-                            <a href="{{ url_for('dashboard') }}" class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-primary-600 hover:bg-primary-50 transition-colors">
-                                <i class="fas fa-tachometer-alt mr-1"></i> Dashboard
-                            </a>
-                            <a href="{{ url_for('browse_jobs') }}" class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-primary-600 hover:bg-primary-50 transition-colors">
-                                <i class="fas fa-briefcase mr-1"></i> Jobs
-                            </a>
-                            <a href="{{ url_for('my_applications') }}" class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-primary-600 hover:bg-primary-50 transition-colors">
-                                <i class="fas fa-file-alt mr-1"></i> Applications
-                            </a>
-                            <a href="/" class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-primary-600 hover:bg-primary-50 transition-colors">
-                                <i class="fas fa-upload mr-1"></i> Upload Resume
-                            </a>
-                            <a href="{{ url_for('logout') }}" class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-primary-600 hover:bg-primary-50 transition-colors">
-                                <i class="fas fa-sign-out-alt mr-1"></i> Logout
-                            </a>
-                        </div>
+                        <!-- Guest Navigation -->
+                        <a href="{{ url_for('login') }}" class="px-4 py-2 rounded-lg text-sm font-medium text-gray-700 hover:text-primary-600 hover:bg-primary-50 transition-all duration-200 flex items-center">
+                            <i class="fas fa-sign-in-alt mr-2"></i> Login
+                        </a>
+                        <a href="{{ url_for('signup') }}" class="px-4 py-2 rounded-lg text-sm font-medium bg-gradient-to-r from-primary-500 to-primary-600 text-white hover:from-primary-600 hover:to-primary-700 shadow-sm transition-all duration-200 flex items-center">
+                            <i class="fas fa-user-plus mr-2"></i> Sign Up
+                        </a>
+                        <a href="{{ url_for('login_recruiter') }}" class="px-4 py-2 rounded-lg text-sm font-medium text-gray-700 hover:text-primary-600 hover:bg-primary-50 transition-all duration-200 flex items-center">
+                            <i class="fas fa-user-tie mr-2"></i> Recruiter Login
+                        </a>
                     {% endif %}
-                {% else %}
-                    <!-- Guest Navigation -->
-                    <div class="hidden sm:ml-6 sm:flex sm:items-center space-x-4">
-                        <a href="{{ url_for('login') }}" class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-primary-600 hover:bg-primary-50 transition-colors">
-                            <i class="fas fa-sign-in-alt mr-1"></i> Login
-                        </a>
-                        <a href="{{ url_for('signup') }}" class="px-3 py-2 rounded-md text-sm font-medium bg-primary-600 text-white hover:bg-primary-700 transition-colors">
-                            <i class="fas fa-user-plus mr-1"></i> Sign Up
-                        </a>
-                        <a href="{{ url_for('login_recruiter') }}" class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-primary-600 hover:bg-primary-50 transition-colors">
-                            <i class="fas fa-user-tie mr-1"></i> Recruiter Login
-                        </a>
-                    </div>
-                {% endif %}
+                </div>
                 
                 <!-- Mobile menu button -->
-                <div class="-mr-2 flex items-center sm:hidden">
-                    <button type="button" id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary-500">
+                <div class="flex items-center sm:hidden">
+                    <button type="button" id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-500 hover:text-gray-900 hover:bg-gray-100 focus:outline-none transition-colors duration-200">
                         <span class="sr-only">Open main menu</span>
-                        <i class="fas fa-bars text-xl"></i>
+                        <i class="fas fa-bars text-xl" id="menu-icon"></i>
                     </button>
                 </div>
             </div>
         </div>
 
         <!-- Mobile menu -->
-        <div class="hidden sm:hidden" id="mobile-menu">
-            <div class="pt-2 pb-3 space-y-1 px-4">
+        <div class="hidden sm:hidden bg-white shadow-lg animate-slide-down" id="mobile-menu">
+            <div class="pt-2 pb-4 space-y-1 px-4">
                 {% if current_user.is_authenticated %}
                     {% if current_user.__class__.__name__ == 'Recruiter' %}
                         <!-- Recruiter Mobile Menu -->
-                        <a href="{{ url_for('recruiter_dashboard') }}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary-600 hover:bg-primary-50">
-                            <i class="fas fa-tachometer-alt mr-2"></i> Dashboard
+                        <a href="{{ url_for('recruiter_dashboard') }}" class="block px-4 py-3 rounded-lg text-base font-medium text-gray-700 hover:text-primary-600 hover:bg-primary-50 transition-colors duration-200 flex items-center">
+                            <i class="fas fa-tachometer-alt mr-3 w-5 text-center"></i> Dashboard
                         </a>
-                        <a href="{{ url_for('create_job') }}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary-600 hover:bg-primary-50">
-                            <i class="fas fa-plus-circle mr-2"></i> Post Job
+                        <a href="{{ url_for('create_job') }}" class="block px-4 py-3 rounded-lg text-base font-medium text-gray-700 hover:text-primary-600 hover:bg-primary-50 transition-colors duration-200 flex items-center">
+                            <i class="fas fa-plus-circle mr-3 w-5 text-center"></i> Post Job
                         </a>
-                        <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary-600 hover:bg-primary-50">
-                            <i class="fas fa-list-ul mr-2"></i> My Jobs
+                        <a href="#" class="block px-4 py-3 rounded-lg text-base font-medium text-gray-700 hover:text-primary-600 hover:bg-primary-50 transition-colors duration-200 flex items-center">
+                            <i class="fas fa-list-ul mr-3 w-5 text-center"></i> My Jobs
                         </a>
-                        <a href="{{ url_for('view_applicants') }}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary-600 hover:bg-primary-50">
-                            <i class="fas fa-users mr-2"></i> Applicants
+                        <a href="{{ url_for('view_applicants') }}" class="block px-4 py-3 rounded-lg text-base font-medium text-gray-700 hover:text-primary-600 hover:bg-primary-50 transition-colors duration-200 flex items-center">
+                            <i class="fas fa-users mr-3 w-5 text-center"></i> Applicants
                         </a>
-                        <a href="" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary-600 hover:bg-primary-50">
-                            <i class="fas fa-user-edit mr-2"></i> Profile
+                        <a href="" class="block px-4 py-3 rounded-lg text-base font-medium text-gray-700 hover:text-primary-600 hover:bg-primary-50 transition-colors duration-200 flex items-center">
+                            <i class="fas fa-user-edit mr-3 w-5 text-center"></i> Profile
                         </a>
-                        <a href="{{ url_for('logout') }}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary-600 hover:bg-primary-50">
-                            <i class="fas fa-sign-out-alt mr-2"></i> Logout
+                        <a href="{{ url_for('logout') }}" class="block px-4 py-3 rounded-lg text-base font-medium text-gray-700 hover:text-primary-600 hover:bg-primary-50 transition-colors duration-200 flex items-center">
+                            <i class="fas fa-sign-out-alt mr-3 w-5 text-center"></i> Logout
                         </a>
                     {% else %}
                         <!-- Applicant Mobile Menu -->
-                        <a href="{{ url_for('dashboard') }}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary-600 hover:bg-primary-50">
-                            <i class="fas fa-tachometer-alt mr-2"></i> Dashboard
+                        <a href="{{ url_for('dashboard') }}" class="block px-4 py-3 rounded-lg text-base font-medium text-gray-700 hover:text-primary-600 hover:bg-primary-50 transition-colors duration-200 flex items-center">
+                            <i class="fas fa-tachometer-alt mr-3 w-5 text-center"></i> Dashboard
                         </a>
-                        <a href="{{ url_for('browse_jobs') }}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary-600 hover:bg-primary-50">
-                            <i class="fas fa-briefcase mr-2"></i> Jobs
+                        <a href="{{ url_for('browse_jobs') }}" class="block px-4 py-3 rounded-lg text-base font-medium text-gray-700 hover:text-primary-600 hover:bg-primary-50 transition-colors duration-200 flex items-center">
+                            <i class="fas fa-briefcase mr-3 w-5 text-center"></i> Jobs
                         </a>
-                        <a href="{{ url_for('my_applications') }}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary-600 hover:bg-primary-50">
-                            <i class="fas fa-file-alt mr-2"></i> Applications
+                        <a href="{{ url_for('my_applications') }}" class="block px-4 py-3 rounded-lg text-base font-medium text-gray-700 hover:text-primary-600 hover:bg-primary-50 transition-colors duration-200 flex items-center">
+                            <i class="fas fa-file-alt mr-3 w-5 text-center"></i> Applications
                         </a>
-                        <a href="/" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary-600 hover:bg-primary-50">
-                            <i class="fas fa-upload mr-2"></i> Upload Resume
+                        <a href="{{ url_for('upload_cv') }}" class="block px-4 py-3 rounded-lg text-base font-medium text-gray-700 hover:text-primary-600 hover:bg-primary-50 transition-colors duration-200 flex items-center">
+                            <i class="fas fa-upload mr-3 w-5 text-center"></i> Upload Resume
                         </a>
-                        <a href="{{ url_for('logout') }}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary-600 hover:bg-primary-50">
-                            <i class="fas fa-sign-out-alt mr-2"></i> Logout
+                        <a href="{{ url_for('logout') }}" class="block px-4 py-3 rounded-lg text-base font-medium text-gray-700 hover:text-primary-600 hover:bg-primary-50 transition-colors duration-200 flex items-center">
+                            <i class="fas fa-sign-out-alt mr-3 w-5 text-center"></i> Logout
                         </a>
                     {% endif %}
                 {% else %}
                     <!-- Guest Mobile Menu -->
-                    <a href="{{ url_for('login') }}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary-600 hover:bg-primary-50">
-                        <i class="fas fa-sign-in-alt mr-2"></i> Login
+                    <a href="{{ url_for('login') }}" class="block px-4 py-3 rounded-lg text-base font-medium text-gray-700 hover:text-primary-600 hover:bg-primary-50 transition-colors duration-200 flex items-center">
+                        <i class="fas fa-sign-in-alt mr-3 w-5 text-center"></i> Login
                     </a>
-                    <a href="{{ url_for('signup') }}" class="block px-3 py-2 rounded-md text-base font-medium bg-primary-600 text-white hover:bg-primary-700">
-                        <i class="fas fa-user-plus mr-2"></i> Sign Up
+                    <a href="{{ url_for('signup') }}" class="block px-4 py-3 rounded-lg text-base font-medium bg-gradient-to-r from-primary-500 to-primary-600 text-white hover:from-primary-600 hover:to-primary-700 shadow-sm transition-colors duration-200 flex items-center">
+                        <i class="fas fa-user-plus mr-3 w-5 text-center"></i> Sign Up
                     </a>
-                    <a href="{{ url_for('login_recruiter') }}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary-600 hover:bg-primary-50">
-                        <i class="fas fa-user-tie mr-2"></i> Recruiter Login
+                    <a href="{{ url_for('login_recruiter') }}" class="block px-4 py-3 rounded-lg text-base font-medium text-gray-700 hover:text-primary-600 hover:bg-primary-50 transition-colors duration-200 flex items-center">
+                        <i class="fas fa-user-tie mr-3 w-5 text-center"></i> Recruiter Login
                     </a>
                 {% endif %}
             </div>
@@ -186,18 +223,19 @@
     <!-- Flash messages -->
     {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4 space-y-2">
                 {% for category, message in messages %}
-                    <div class="alert alert-{{ category }} p-4 rounded-md shadow-sm border-l-4 {% if category == 'success' %}bg-green-50 border-green-500 text-green-700{% elif category == 'error' %}bg-red-50 border-red-500 text-red-700{% else %}bg-blue-50 border-blue-500 text-blue-700{% endif %}">
-                        <div class="flex items-center">
-                            {% if category == 'success' %}
-                                <i class="fas fa-check-circle mr-3"></i>
-                            {% elif category == 'error' %}
-                                <i class="fas fa-exclamation-circle mr-3"></i>
-                            {% else %}
-                                <i class="fas fa-info-circle mr-3"></i>
-                            {% endif %}
+                    <div class="alert alert-{{ category }} p-4 rounded-lg shadow-sm border-l-4 flex items-start animate-fade-in {% if category == 'success' %}bg-green-50 border-green-500 text-green-700{% elif category == 'error' %}bg-red-50 border-red-500 text-red-700{% else %}bg-blue-50 border-blue-500 text-blue-700{% endif %}">
+                        {% if category == 'success' %}
+                            <i class="fas fa-check-circle mr-3 mt-0.5 text-lg"></i>
+                        {% elif category == 'error' %}
+                            <i class="fas fa-exclamation-circle mr-3 mt-0.5 text-lg"></i>
+                        {% else %}
+                            <i class="fas fa-info-circle mr-3 mt-0.5 text-lg"></i>
+                        {% endif %}
+                        <div>
                             <p class="font-medium">{{ message }}</p>
+                            <button class="text-xs mt-1 opacity-70 hover:opacity-100 transition-opacity dismiss-flash">Dismiss</button>
                         </div>
                     </div>
                 {% endfor %}
@@ -213,79 +251,176 @@
     <!-- Footer -->
     <footer class="bg-white border-t border-gray-200 mt-12">
         <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div>
-                    <h3 class="text-lg font-semibold text-gray-900 mb-4">
-                        <i class="fas fa-brain text-primary-600 mr-2"></i> NerdyParser.com
-                    </h3>
-                    <p class="text-gray-500 text-sm">
-                        The smartest resume parser powered by AI. Extract valuable insights from resumes in seconds.
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div class="md:col-span-2">
+                    <div class="flex items-center space-x-3 mb-4">
+                        <div class="w-10 h-10 rounded-lg bg-primary-600 flex items-center justify-center">
+                            <i class="fas fa-briefcase text-white text-xl"></i>
+                        </div>
+                        <span class="text-xl font-bold text-gray-900">
+                            Emploify<span class="text-primary-600">.io</span>
+                        </span>
+                    </div>
+                    <p class="text-gray-500 text-sm mb-4">
+                        The smartest resume parser powered by AI. Extract valuable insights from resumes in seconds and find the perfect candidates faster.
                     </p>
-                    <div class="mt-4 flex space-x-4">
-                        <a href="#" class="text-gray-400 hover:text-primary-600">
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-primary-600 transition-colors duration-200 transform hover:scale-110">
                             <i class="fab fa-twitter text-xl"></i>
                         </a>
-                        <a href="#" class="text-gray-400 hover:text-primary-600">
+                        <a href="#" class="text-gray-400 hover:text-primary-600 transition-colors duration-200 transform hover:scale-110">
                             <i class="fab fa-github text-xl"></i>
                         </a>
-                        <a href="#" class="text-gray-400 hover:text-primary-600">
+                        <a href="#" class="text-gray-400 hover:text-primary-600 transition-colors duration-200 transform hover:scale-110">
                             <i class="fab fa-linkedin text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-primary-600 transition-colors duration-200 transform hover:scale-110">
+                            <i class="fab fa-facebook text-xl"></i>
                         </a>
                     </div>
                 </div>
                 <div>
-                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Quick Links</h3>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Product</h3>
                     <ul class="space-y-2">
-                        <li><a href="/" class="text-gray-500 hover:text-primary-600 transition-colors">Home</a></li>
-                        <li><a href="#" class="text-gray-500 hover:text-primary-600 transition-colors">Features</a></li>
-                        <li><a href="#" class="text-gray-500 hover:text-primary-600 transition-colors">Pricing</a></li>
-                        <li><a href="#" class="text-gray-500 hover:text-primary-600 transition-colors">Documentation</a></li>
+                        <li><a href="#" class="text-gray-500 hover:text-primary-600 transition-colors duration-200 flex items-center">
+                            <i class="fas fa-chevron-right text-xs mr-2 text-primary-500"></i> Features
+                        </a></li>
+                        <li><a href="#" class="text-gray-500 hover:text-primary-600 transition-colors duration-200 flex items-center">
+                            <i class="fas fa-chevron-right text-xs mr-2 text-primary-500"></i> Pricing
+                        </a></li>
+                        <li><a href="#" class="text-gray-500 hover:text-primary-600 transition-colors duration-200 flex items-center">
+                            <i class="fas fa-chevron-right text-xs mr-2 text-primary-500"></i> API
+                        </a></li>
+                        <li><a href="#" class="text-gray-500 hover:text-primary-600 transition-colors duration-200 flex items-center">
+                            <i class="fas fa-chevron-right text-xs mr-2 text-primary-500"></i> Integrations
+                        </a></li>
                     </ul>
                 </div>
                 <div>
-                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Legal</h3>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Resources</h3>
                     <ul class="space-y-2">
-                        <li><a href="#" class="text-gray-500 hover:text-primary-600 transition-colors">Privacy Policy</a></li>
-                        <li><a href="#" class="text-gray-500 hover:text-primary-600 transition-colors">Terms of Service</a></li>
-                        <li><a href="#" class="text-gray-500 hover:text-primary-600 transition-colors">Cookie Policy</a></li>
+                        <li><a href="#" class="text-gray-500 hover:text-primary-600 transition-colors duration-200 flex items-center">
+                            <i class="fas fa-chevron-right text-xs mr-2 text-primary-500"></i> Documentation
+                        </a></li>
+                        <li><a href="#" class="text-gray-500 hover:text-primary-600 transition-colors duration-200 flex items-center">
+                            <i class="fas fa-chevron-right text-xs mr-2 text-primary-500"></i> Guides
+                        </a></li>
+                        <li><a href="#" class="text-gray-500 hover:text-primary-600 transition-colors duration-200 flex items-center">
+                            <i class="fas fa-chevron-right text-xs mr-2 text-primary-500"></i> Blog
+                        </a></li>
+                        <li><a href="#" class="text-gray-500 hover:text-primary-600 transition-colors duration-200 flex items-center">
+                            <i class="fas fa-chevron-right text-xs mr-2 text-primary-500"></i> Support
+                        </a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Company</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-500 hover:text-primary-600 transition-colors duration-200 flex items-center">
+                            <i class="fas fa-chevron-right text-xs mr-2 text-primary-500"></i> About
+                        </a></li>
+                        <li><a href="#" class="text-gray-500 hover:text-primary-600 transition-colors duration-200 flex items-center">
+                            <i class="fas fa-chevron-right text-xs mr-2 text-primary-500"></i> Careers
+                        </a></li>
+                        <li><a href="#" class="text-gray-500 hover:text-primary-600 transition-colors duration-200 flex items-center">
+                            <i class="fas fa-chevron-right text-xs mr-2 text-primary-500"></i> Privacy
+                        </a></li>
+                        <li><a href="#" class="text-gray-500 hover:text-primary-600 transition-colors duration-200 flex items-center">
+                            <i class="fas fa-chevron-right text-xs mr-2 text-primary-500"></i> Terms
+                        </a></li>
                     </ul>
                 </div>
             </div>
-            <div class="mt-12 pt-8 border-t border-gray-200 text-center">
-                <p class="text-gray-500 text-sm">
-                    &copy; 2023 NerdyParser.com. All rights reserved.
+            <div class="mt-12 pt-8 border-t border-gray-200 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-500 text-sm mb-4 md:mb-0">
+                    &copy; 2023 Emploify.io. All rights reserved.
                 </p>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-500 hover:text-primary-600 text-sm transition-colors duration-200">Privacy Policy</a>
+                    <a href="#" class="text-gray-500 hover:text-primary-600 text-sm transition-colors duration-200">Terms of Service</a>
+                    <a href="#" class="text-gray-500 hover:text-primary-600 text-sm transition-colors duration-200">Cookie Policy</a>
+                </div>
             </div>
         </div>
     </footer>
 
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
     <script>
-        // Mobile menu toggle
+        // Mobile menu toggle with animation
         document.getElementById('mobile-menu-button').addEventListener('click', function() {
             const menu = document.getElementById('mobile-menu');
+            const icon = document.getElementById('menu-icon');
+            
             menu.classList.toggle('hidden');
+            
+            if (menu.classList.contains('hidden')) {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            } else {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            }
         });
 
         // Close mobile menu when clicking outside
         document.addEventListener('click', function(event) {
             const menu = document.getElementById('mobile-menu');
             const button = document.getElementById('mobile-menu-button');
+            const icon = document.getElementById('menu-icon');
             
-            if (!menu.contains(event.target) && !button.contains(event.target)) {
+            if (!menu.contains(event.target) && !button.contains(event.target) {
                 menu.classList.add('hidden');
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
             }
+        });
+
+        // Dismiss flash messages
+        document.querySelectorAll('.dismiss-flash').forEach(button => {
+            button.addEventListener('click', function() {
+                const alert = this.closest('.alert');
+                alert.style.transition = 'opacity 0.3s ease-out';
+                alert.style.opacity = '0';
+                setTimeout(() => alert.remove(), 300);
+            });
         });
 
         // Auto-dismiss flash messages after 5 seconds
         setTimeout(() => {
             const alerts = document.querySelectorAll('.alert');
             alerts.forEach(alert => {
-                alert.style.transition = 'opacity 0.5s ease-out';
+                alert.style.transition = 'opacity 0.3s ease-out';
                 alert.style.opacity = '0';
-                setTimeout(() => alert.remove(), 500);
+                setTimeout(() => alert.remove(), 300);
             });
         }, 5000);
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Add hover effect to dropdown items
+        document.querySelectorAll('.group').forEach(group => {
+            group.addEventListener('mouseenter', function() {
+                const dropdown = this.querySelector('.hidden');
+                if (dropdown) {
+                    dropdown.classList.remove('hidden');
+                }
+            });
+            
+            group.addEventListener('mouseleave', function() {
+                const dropdown = this.querySelector('.animate-slide-down');
+                if (dropdown && !dropdown.contains(event.relatedTarget)) {
+                    dropdown.classList.add('hidden');
+                }
+            });
+        });
     </script>
 </body>
 </html>
